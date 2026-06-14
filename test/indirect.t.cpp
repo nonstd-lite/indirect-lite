@@ -104,13 +104,13 @@ struct named_deleter
     void operator()( T * p ) const { delete p; }
 };
 
-// using counted_indirect_value = indirect_value<int, copy_counter<int>, delete_counter<int>>;
+// using counted_indirect = indirect<int, copy_counter<int>, delete_counter<int>>;
 
-CASE( "indirect_value: Allows to default construct (empty)" )
+CASE( "indirect: Allows to default construct (empty)" )
 {
     SETUP("scope")
     {
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv;
+        indirect<int, copy_counter<int>, delete_counter<int>> iv;
 
         // default disengaged:
         EXPECT_NOT( iv                         );
@@ -124,11 +124,11 @@ CASE( "indirect_value: Allows to default construct (empty)" )
     EXPECT( delete_counter_call_count == 0 );
 }
 
-CASE( "indirect_value: Allows to construct from pointer" )
+CASE( "indirect: Allows to construct from pointer" )
 {
     SETUP("scope")
     {
-        const indirect_value<int, copy_counter<int>, delete_counter<int>> iv( new int( 7 ) );
+        const indirect<int, copy_counter<int>, delete_counter<int>> iv( new int( 7 ) );
 
         EXPECT(  iv      );
         EXPECT( *iv == 7 );
@@ -141,11 +141,11 @@ CASE( "indirect_value: Allows to construct from pointer" )
     EXPECT( delete_counter_call_count == 1 );
 }
 
-CASE( "indirect_value: Allows to in-place construct from arguments" )
+CASE( "indirect: Allows to in-place construct from arguments" )
 {
     SETUP("scope")
     {
-        const indirect_value<int, copy_counter<int>, delete_counter<int>> iv( nonstd_lite_in_place(int), 7 );
+        const indirect<int, copy_counter<int>, delete_counter<int>> iv( nonstd_lite_in_place(int), 7 );
 
         EXPECT(  iv      );
         EXPECT( *iv == 7 );
@@ -158,15 +158,15 @@ CASE( "indirect_value: Allows to in-place construct from arguments" )
     EXPECT( delete_counter_call_count == 1 );
 }
 
-CASE( "indirect_value: Allows to copy-construct" )
+CASE( "indirect: Allows to copy-construct" )
 {
     SETUP("scope")
     {
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv0;
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv1( new int( 7 ) );
+        indirect<int, copy_counter<int>, delete_counter<int>> iv0;
+        indirect<int, copy_counter<int>, delete_counter<int>> iv1( new int( 7 ) );
 
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv2( iv0 );
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv3( iv1 );
+        indirect<int, copy_counter<int>, delete_counter<int>> iv2( iv0 );
+        indirect<int, copy_counter<int>, delete_counter<int>> iv3( iv1 );
 
         EXPECT_NOT( iv2      );
         EXPECT(     iv3      );
@@ -180,12 +180,12 @@ CASE( "indirect_value: Allows to copy-construct" )
     EXPECT( delete_counter_call_count == 2 );
 }
 
-CASE( "indirect_value: Allows to move-construct" )
+CASE( "indirect: Allows to move-construct" )
 {
     SETUP("scope")
     {
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv2( indirect_value<int, copy_counter<int>, delete_counter<int>>{              } );
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv3( indirect_value<int, copy_counter<int>, delete_counter<int>>{ new int( 7 ) } );
+        indirect<int, copy_counter<int>, delete_counter<int>> iv2( indirect<int, copy_counter<int>, delete_counter<int>>{              } );
+        indirect<int, copy_counter<int>, delete_counter<int>> iv3( indirect<int, copy_counter<int>, delete_counter<int>>{ new int( 7 ) } );
 
         EXPECT_NOT( iv2      );
         EXPECT(     iv3      );
@@ -199,13 +199,13 @@ CASE( "indirect_value: Allows to move-construct" )
     EXPECT( delete_counter_call_count == 1 );
 }
 
-CASE( "indirect_value: Allows to copy-assign" )
+CASE( "indirect: Allows to copy-assign" )
 {
     SETUP("scope")
     {
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv0;
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv1( new int( 7 ) );
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv2;
+        indirect<int, copy_counter<int>, delete_counter<int>> iv0;
+        indirect<int, copy_counter<int>, delete_counter<int>> iv1( new int( 7 ) );
+        indirect<int, copy_counter<int>, delete_counter<int>> iv2;
 
         iv2 = iv1;
 
@@ -227,13 +227,13 @@ CASE( "indirect_value: Allows to copy-assign" )
     EXPECT( delete_counter_call_count == 2 );
 }
 
-CASE( "indirect_value: Allows to move-assign" )
+CASE( "indirect: Allows to move-assign" )
 {
     SETUP("scope")
     {
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv0;
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv1( new int( 7 ) );
-        indirect_value<int, copy_counter<int>, delete_counter<int>> iv2;
+        indirect<int, copy_counter<int>, delete_counter<int>> iv0;
+        indirect<int, copy_counter<int>, delete_counter<int>> iv1( new int( 7 ) );
+        indirect<int, copy_counter<int>, delete_counter<int>> iv2;
 
         iv2 = std::move( iv1 );
 
@@ -256,10 +256,10 @@ CASE( "indirect_value: Allows to move-assign" )
     EXPECT( delete_counter_call_count == 1 );
 }
 
-CASE( "indirect_value: Allows to swap (value)" )
+CASE( "indirect: Allows to swap (value)" )
 {
-    indirect_value<int> iv3( new int( 3 ) );
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv3( new int( 3 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     iv3.swap( iv7 );
 
@@ -267,11 +267,11 @@ CASE( "indirect_value: Allows to swap (value)" )
     EXPECT( *iv7 == 3 );
 }
 
-CASE( "indirect_value: Allows to swap (copier)" )
+CASE( "indirect: Allows to swap (copier)" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS
-    indirect_value< int, named_copier<int> > iv1;
-    indirect_value< int, named_copier<int> > iv2;
+    indirect< int, named_copier<int> > iv1;
+    indirect< int, named_copier<int> > iv2;
 
     iv1.get_copier().name = "A";
     iv2.get_copier().name = "B";
@@ -284,15 +284,15 @@ CASE( "indirect_value: Allows to swap (copier)" )
     EXPECT( iv1.get_copier().name == "B" );
     EXPECT( iv2.get_copier().name == "A" );
 #else
-    EXPECT( !!"indirect_value: get_copier() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
+    EXPECT( !!"indirect: get_copier() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to swap (deleter)" )
+CASE( "indirect: Allows to swap (deleter)" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS
-    indirect_value< int, named_copier<int>, named_deleter<int> > iv1;
-    indirect_value< int, named_copier<int>, named_deleter<int> > iv2;
+    indirect< int, named_copier<int>, named_deleter<int> > iv1;
+    indirect< int, named_copier<int>, named_deleter<int> > iv2;
 
     iv1.get_deleter().name = "A";
     iv2.get_deleter().name = "B";
@@ -305,213 +305,213 @@ CASE( "indirect_value: Allows to swap (deleter)" )
     EXPECT( iv1.get_deleter().name == "B" );
     EXPECT( iv2.get_deleter().name == "A" );
 #else
-    EXPECT( !!"indirect_value: get_deleter() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
+    EXPECT( !!"indirect: get_deleter() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
 #endif
 }
 
 struct S { int x = 7; };
 
-CASE( "indirect_value: Allows to obtain value, operator->()" )
+CASE( "indirect: Allows to obtain value, operator->()" )
 {
-    indirect_value<S> ivs7( new S );
+    indirect<S> ivs7( new S );
 
     EXPECT( ivs7->x == 7 );
 }
 
-CASE( "indirect_value: Allows to obtain value, operator->() const" )
+CASE( "indirect: Allows to obtain value, operator->() const" )
 {
-    const indirect_value<S> ivs7( new S );
+    const indirect<S> ivs7( new S );
 
     EXPECT( ivs7->x == 7 );
 }
 
-CASE( "indirect_value: Allows to obtain value, operator*() &" )
+CASE( "indirect: Allows to obtain value, operator*() &" )
 {
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT( *iv7 == 7 );
 }
 
-CASE( "indirect_value: Allows to obtain value, operator*() const &" )
+CASE( "indirect: Allows to obtain value, operator*() const &" )
 {
-    const indirect_value<int> iv7( new int( 7 ) );
+    const indirect<int> iv7( new int( 7 ) );
 
     EXPECT( *iv7 == 7 );
 }
 
-CASE( "indirect_value: Allows to obtain value, operator*() &&" )
+CASE( "indirect: Allows to obtain value, operator*() &&" )
 {
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT( *std::move(iv7) == 7 );
 }
 
-CASE( "indirect_value: Allows to obtain value,operator*() const &&" )
+CASE( "indirect: Allows to obtain value,operator*() const &&" )
 {
-    const indirect_value<int> iv7( new int( 7 ) );
+    const indirect<int> iv7( new int( 7 ) );
 
     EXPECT( *std::move(iv7) == 7 );
 }
 
-CASE( "indirect_value: Allows to check if engaged, operator bool()" )
+CASE( "indirect: Allows to check if engaged, operator bool()" )
 {
-    const indirect_value<int> iv;
-    const indirect_value<int> iv7( new int( 7 ) );
+    const indirect<int> iv;
+    const indirect<int> iv7( new int( 7 ) );
 
     EXPECT_NOT( bool( iv  ) );
     EXPECT(     bool( iv7 ) );
 }
 
-CASE( "indirect_value: Allows to check if engaged, has_value()" " [extension]" )
+CASE( "indirect: Allows to check if engaged, has_value()" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    indirect_value<int> iv;
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv;
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT_NOT(  iv.has_value() );
     EXPECT(     iv7.has_value() );
 #else
-    EXPECT( !!"indirect_value: has_value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: has_value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to obtain value, value() &" " [extension]" )
+CASE( "indirect: Allows to obtain value, value() &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT( iv7.value() == 7 );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to obtain value, value() const &" " [extension]" )
+CASE( "indirect: Allows to obtain value, value() const &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    const indirect_value<int> iv7( new int( 7 ) );
+    const indirect<int> iv7( new int( 7 ) );
 
     EXPECT( iv7.value() == 7 );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to obtain value, value() &&" " [extension]" )
+CASE( "indirect: Allows to obtain value, value() &&" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT( std::move(iv7).value() == 7 );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to obtain value, value() const &&" " [extension]" )
+CASE( "indirect: Allows to obtain value, value() const &&" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    const indirect_value<int> iv7( new int( 7 ) );
+    const indirect<int> iv7( new int( 7 ) );
 
     EXPECT( std::move(iv7).value() == 7 );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: No throw of exception on valid value access, value() &" " [extension]" )
+CASE( "indirect: No throw of exception on valid value access, value() &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT_NO_THROW( iv7.value() );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: No throw of exception on valid value access, value() const &" " [extension]" )
+CASE( "indirect: No throw of exception on valid value access, value() const &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    const indirect_value<int> iv7( new int( 7 ) );
+    const indirect<int> iv7( new int( 7 ) );
 
     EXPECT_NO_THROW( iv7.value() );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: No throw of exception on valid value access, value() &&" " [extension]" )
+CASE( "indirect: No throw of exception on valid value access, value() &&" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT_NO_THROW( std::move(iv7).value() );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: No throw of exception on valid value access, value() const &&" " [extension]" )
+CASE( "indirect: No throw of exception on valid value access, value() const &&" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    const indirect_value<int> iv7( new int( 7 ) );
+    const indirect<int> iv7( new int( 7 ) );
 
     EXPECT_NO_THROW( std::move(iv7).value() );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Throws on bad value access, value() &" " [extension]" )
+CASE( "indirect: Throws on bad value access, value() &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    indirect_value<int> iv;
+    indirect<int> iv;
 
-    EXPECT_THROWS_AS( iv.value(), bad_indirect_value_access );
+    EXPECT_THROWS_AS( iv.value(), bad_indirect_access );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Throws on bad value access, value() const &" " [extension]" )
+CASE( "indirect: Throws on bad value access, value() const &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    const indirect_value<int> iv;
+    const indirect<int> iv;
 
-    EXPECT_THROWS_AS( iv.value(), bad_indirect_value_access );
+    EXPECT_THROWS_AS( iv.value(), bad_indirect_access );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Throws on bad value access, value() &&" " [extension]" )
+CASE( "indirect: Throws on bad value access, value() &&" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    indirect_value<int> iv;
+    indirect<int> iv;
 
-    EXPECT_THROWS_AS( std::move(iv).value(), bad_indirect_value_access );
+    EXPECT_THROWS_AS( std::move(iv).value(), bad_indirect_access );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Throws on bad value access, value() const &&" " [extension]" )
+CASE( "indirect: Throws on bad value access, value() const &&" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    const indirect_value<int> iv;
+    const indirect<int> iv;
 
-    EXPECT_THROWS_AS( std::move(iv).value(), bad_indirect_value_access );
+    EXPECT_THROWS_AS( std::move(iv).value(), bad_indirect_access );
 #else
-    EXPECT( !!"indirect_value: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to obtain copier, get_copier() &" " [extension]" )
+CASE( "indirect: Allows to obtain copier, get_copier() &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS
-    indirect_value< int, named_copier<int> > iv1( nonstd_lite_in_place(int), 7 );
-    indirect_value< int, named_copier<int> > iv2;
+    indirect< int, named_copier<int> > iv1( nonstd_lite_in_place(int), 7 );
+    indirect< int, named_copier<int> > iv2;
 
     iv1.get_copier().name = "Modified";
 
@@ -521,50 +521,50 @@ CASE( "indirect_value: Allows to obtain copier, get_copier() &" " [extension]" )
 
     EXPECT( iv2.get_copier().name == "Modified" );
 #else
-    EXPECT( !!"indirect_value: get_copier() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
+    EXPECT( !!"indirect: get_copier() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to obtain copier, get_copier() const &" " [extension]" )
+CASE( "indirect: Allows to obtain copier, get_copier() const &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS
-    indirect_value< int, named_copier<int> > iv;
+    indirect< int, named_copier<int> > iv;
 
     EXPECT( iv.get_copier().name == "[C]" );
 #else
-    EXPECT( !!"indirect_value: get_copier() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
+    EXPECT( !!"indirect: get_copier() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to obtain deleter, get_deleter() &" " [extension]" )
+CASE( "indirect: Allows to obtain deleter, get_deleter() &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS
     auto modified_deleter_name = [](){
-        indirect_value< int, named_copier<int>, named_deleter<int> > iv;
+        indirect< int, named_copier<int>, named_deleter<int> > iv;
         iv.get_deleter().name = "Modified";
         return iv;
     };
 
     EXPECT( modified_deleter_name().get_deleter().name == "Modified" );
 #else
-    EXPECT( !!"indirect_value: get_deleter() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
+    EXPECT( !!"indirect: get_deleter() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Allows to obtain deleter, get_deleter() const &" " [extension]" )
+CASE( "indirect: Allows to obtain deleter, get_deleter() const &" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS
-    indirect_value< int, named_copier<int>, named_deleter<int> > iv;
+    indirect< int, named_copier<int>, named_deleter<int> > iv;
 
     EXPECT( iv.get_deleter().name == "[D]" );
 #else
-    EXPECT( !!"indirect_value: get_deleter() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
+    EXPECT( !!"indirect: get_deleter() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
 #endif
 }
 
-CASE( "indirect_value: Ensure using minimum space requirements" )
+CASE( "indirect: Ensure using minimum space requirements" )
 {
-    EXPECT( sizeof(indirect_value<int>) == sizeof(int *) );
+    EXPECT( sizeof(indirect<int>) == sizeof(int *) );
 
     // Same type for copy and delete:
     struct CopyDeleteHybrid
@@ -573,15 +573,15 @@ CASE( "indirect_value: Ensure using minimum space requirements" )
         int * operator()( const int & s ) { return new int( s ); }
     };
 
-    EXPECT( sizeof(indirect_value< int, CopyDeleteHybrid, CopyDeleteHybrid >) == sizeof(int *) );
+    EXPECT( sizeof(indirect< int, CopyDeleteHybrid, CopyDeleteHybrid >) == sizeof(int *) );
 }
 
-CASE( "indirect_value: Ensure noexcept of observers" )
+CASE( "indirect: Ensure noexcept of observers" )
 {
-    using iv_r   = indirect_value<int> &;
-    using iv_cr  = indirect_value<int> const &;
-    using iv_rr  = indirect_value<int> &&;
-    using iv_crr = indirect_value<int>const &&;
+    using iv_r   = indirect<int> &;
+    using iv_cr  = indirect<int> const &;
+    using iv_rr  = indirect<int> &&;
+    using iv_crr = indirect<int>const &&;
 
     EXPECT( noexcept(std::declval<iv_r  >().operator->()) );
     EXPECT( noexcept(std::declval<iv_cr >().operator->()) );
@@ -604,7 +604,7 @@ CASE( "indirect_value: Ensure noexcept of observers" )
     EXPECT( noexcept(std::declval<iv_rr >().has_value()) );
     EXPECT( noexcept(std::declval<iv_crr>().has_value()) );
 
-    // value() may throw bad_indirect_value_access:
+    // value() may throw bad_indirect_access:
     // EXPECT( noexcept(std::declval<iv_r  >().value()) );
     // EXPECT( noexcept(std::declval<iv_cr >().value()) );
     // EXPECT( noexcept(std::declval<iv_rr >().value()) );
@@ -654,12 +654,12 @@ struct same_const_and_ref_qualifiers
     enum { value = same_ref_qualifiers< T, U >::value && same_const_qualifiers< T, U >::value };
 };
 
-CASE( "indirect_value: Ensure ref- and const-qualifier of observers" )
+CASE( "indirect: Ensure ref- and const-qualifier of observers" )
 {
-    using iv_r   = indirect_value<int> &;
-    using iv_cr  = indirect_value<int> const &;
-    using iv_rr  = indirect_value<int> &&;
-    using iv_crr = indirect_value<int> const &&;
+    using iv_r   = indirect<int> &;
+    using iv_cr  = indirect<int> const &;
+    using iv_rr  = indirect<int> &&;
+    using iv_crr = indirect<int> const &&;
 
     EXPECT( (same_const_and_ref_qualifiers<iv_r  , decltype(std::declval<iv_r  >().operator*())>::value) );
     EXPECT( (same_const_and_ref_qualifiers<iv_cr , decltype(std::declval<iv_cr >().operator*())>::value) );
@@ -694,10 +694,10 @@ CASE( "indirect_value: Ensure ref- and const-qualifier of observers" )
 #endif
 }
 
-CASE( "indirect_value: Ensure properties of bad_indirect_value_access" " [extension]" )
+CASE( "indirect: Ensure properties of bad_indirect_access" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    bad_indirect_value_access ex;
+    bad_indirect_access ex;
 
     try
     {
@@ -711,12 +711,12 @@ CASE( "indirect_value: Ensure properties of bad_indirect_value_access" " [extens
         EXPECT( what.size() > 0u  );
     }
 
-    EXPECT( (std::is_base_of<       std::exception, bad_indirect_value_access >::value) );
-    EXPECT(  std::is_nothrow_default_constructible< bad_indirect_value_access >::value );
-    EXPECT(  std::is_nothrow_copy_constructible<    bad_indirect_value_access >::value );
+    EXPECT( (std::is_base_of<       std::exception, bad_indirect_access >::value) );
+    EXPECT(  std::is_nothrow_default_constructible< bad_indirect_access >::value );
+    EXPECT(  std::is_nothrow_copy_constructible<    bad_indirect_access >::value );
     EXPECT(  noexcept( ex.what() ) );
 #else
-    EXPECT( !!"indirect_value: has_value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
+    EXPECT( !!"indirect: has_value() is not available (nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS=1)" );
 #endif
 }
 
@@ -783,7 +783,7 @@ int stats::delete_operator_count = 0;
 template < class C, class D >
 void TestCopyAndDeleteStats( lest::env & lest_env )
 {
-    using IV = indirect_value< int, C, D >;
+    using IV = indirect< int, C, D >;
 
     //
     // Tests with an empty IV
@@ -1063,7 +1063,7 @@ struct EmptyFinal_NY nsiv_final : stats{ char data{}; };
 struct EmptyFinal_YN            : stats{};
 struct EmptyFinal_YY nsiv_final : stats{};
 
-CASE( "indirect_value: Ensure stats of copy and delete type" )
+CASE( "indirect: Ensure stats of copy and delete type" )
 {
     TestCopyAndDeleteStats< EmptyFinal_NN, EmptyFinal_NN >( lest_env );
     TestCopyAndDeleteStats< EmptyFinal_NN, EmptyFinal_NY >( lest_env );
@@ -1086,20 +1086,20 @@ CASE( "indirect_value: Ensure stats of copy and delete type" )
     TestCopyAndDeleteStats< EmptyFinal_YY, EmptyFinal_YY >( lest_env );
 }
 
-CASE( "indirect_value: Ensure protection against reentrancy" )
+CASE( "indirect: Ensure protection against reentrancy" )
 {
-    // There are currently three situations in which an engaged indirect_value will destroy its held value:
+    // There are currently three situations in which an engaged indirect will destroy its held value:
     // 1. Copy assignment operator
     // 2. Move assignment operator
     // 3. Destructor
     //
     // Ensure that when these functions invoke the destructor of the held value,
-    // the indirect_value will already be set to null.
+    // the indirect will already be set to null.
 
     struct Reentrance
     {
         lest::env & lest_env;
-        indirect_value< Reentrance > * back_reference{};
+        indirect< Reentrance > * back_reference{};
         Reentrance( lest::env & lest_env_ ) : lest_env(lest_env_) {}
         Reentrance( Reentrance const & ) = default;
 #if nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
@@ -1111,16 +1111,16 @@ CASE( "indirect_value: Ensure protection against reentrancy" )
 
     // Verify the destructor:
     {
-        indirect_value< Reentrance > iv( nonstd_lite_in_place(Reentrance), lest_env );
+        indirect< Reentrance > iv( nonstd_lite_in_place(Reentrance), lest_env );
         iv->back_reference = &iv;
     }
 
     // Verify the copy-assignment operator (and destructor):
     {
-        indirect_value< Reentrance > iv( nonstd_lite_in_place(Reentrance), lest_env );
+        indirect< Reentrance > iv( nonstd_lite_in_place(Reentrance), lest_env );
         iv->back_reference = &iv;
 
-        indirect_value< Reentrance > copy_assigned( nonstd_lite_in_place(Reentrance), lest_env );
+        indirect< Reentrance > copy_assigned( nonstd_lite_in_place(Reentrance), lest_env );
         copy_assigned->back_reference = &copy_assigned;
 
         copy_assigned = iv;
@@ -1129,10 +1129,10 @@ CASE( "indirect_value: Ensure protection against reentrancy" )
 
     // Verify the move-assignment operator (and destructor):
     {
-        indirect_value< Reentrance > iv( nonstd_lite_in_place(Reentrance), lest_env );
+        indirect< Reentrance > iv( nonstd_lite_in_place(Reentrance), lest_env );
         iv->back_reference = &iv;
 
-        indirect_value< Reentrance > move_assigned( nonstd_lite_in_place(Reentrance), lest_env );
+        indirect< Reentrance > move_assigned( nonstd_lite_in_place(Reentrance), lest_env );
         move_assigned->back_reference = &move_assigned;
 
         move_assigned = std::move( iv );
@@ -1140,13 +1140,13 @@ CASE( "indirect_value: Ensure protection against reentrancy" )
     }
 }
 
-CASE( "indirect_value: Ensure protection against self-assign" )
+CASE( "indirect: Ensure protection against self-assign" )
 {
     // scope:
     {
         stats::reset();
 
-        indirect_value< int, stats, stats > empty;
+        indirect< int, stats, stats > empty;
 
         assign( empty, empty );
 
@@ -1164,7 +1164,7 @@ CASE( "indirect_value: Ensure protection against self-assign" )
     {
         stats::reset();
 
-        indirect_value< int, stats, stats > engaged( nonstd_lite_in_place(int), 7 );
+        indirect< int, stats, stats > engaged( nonstd_lite_in_place(int), 7 );
 
         assign( engaged, engaged );
 
@@ -1208,10 +1208,10 @@ struct nonstd::copier_traits< CopierWithCallback >
     using deleter_type = std::default_delete< int >;
 };
 
-CASE( "indirect_value: Ensure using source copier when copying" )
+CASE( "indirect: Ensure using source copier when copying" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS
-    indirect_value< int, CopierWithCallback > engaged_source( nonstd_lite_in_place(int) );
+    indirect< int, CopierWithCallback > engaged_source( nonstd_lite_in_place(int) );
 
     int copy_count = 0;
     engaged_source.get_copier().callback = [ &copy_count ]() mutable { ++copy_count; };
@@ -1220,21 +1220,21 @@ CASE( "indirect_value: Ensure using source copier when copying" )
 
     EXPECT( copy_count == 0 );
 
-    indirect_value< int, CopierWithCallback > copy( engaged_source );
+    indirect< int, CopierWithCallback > copy( engaged_source );
 
     EXPECT( copy_count == 1 );
 
-    indirect_value< int, CopierWithCallback > empty_assignee;
+    indirect< int, CopierWithCallback > empty_assignee;
     empty_assignee = engaged_source;
 
     EXPECT( copy_count == 2 );
 
-    indirect_value< int, CopierWithCallback > engaged_assignee( nonstd_lite_in_place(int) );
+    indirect< int, CopierWithCallback > engaged_assignee( nonstd_lite_in_place(int) );
     engaged_assignee = engaged_source;
 
     EXPECT( copy_count == 3 );
 #else
-    EXPECT( !!"indirect_value: get_copier() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
+    EXPECT( !!"indirect: get_copier() is not available (nsiv_CONFIG_NO_EXTENSION_GET_CPY_DEL_MEMBERS=1)" );
 #endif
 }
 
@@ -1253,10 +1253,10 @@ namespace std17 {
 #endif
 } // namespace std17
 
-CASE( "indirect_value: Ensure working with an incomplete type" )
+CASE( "indirect: Ensure working with an incomplete type" )
 {
     class Incomplete;
-    using IV = indirect_value< Incomplete >;
+    using IV = indirect< Incomplete >;
 
     // Compile to see that it works with an incomplete type:
 
@@ -1289,9 +1289,9 @@ CASE( "indirect_value: Ensure working with an incomplete type" )
 
 // Algorithms:
 
-CASE( "make_indirect_value(): Allows to in-place construct an indirect value from parameters" )
+CASE( "make_indirect(): Allows to in-place construct an indirect value from parameters" )
 {
-    auto iv7 = make_indirect_value<int>(7);
+    auto iv7 = make_indirect<int>(7);
 
     EXPECT( *iv7 == 7 );
 }
@@ -1369,7 +1369,7 @@ struct CompositeType
 size_t CompositeType::object_count = 0;
 } // anonymous namespace
 
-CASE( "allocate_indirect_value(): Allows to in-place construct an indirect value from parameters, with given allocator" )
+CASE( "allocate_indirect(): Allows to in-place construct an indirect value from parameters, with given allocator" )
 {
     SETUP( "" ) {
         unsigned allocs   = 0;
@@ -1378,13 +1378,13 @@ CASE( "allocate_indirect_value(): Allows to in-place construct an indirect value
 
     SECTION( "allocate, deallocate on destruction" ) {
         {
-            auto ct = allocate_indirect_value<CompositeType>( std::allocator_arg_t{}, alloc, 7 );
+            auto ct = allocate_indirect<CompositeType>( std::allocator_arg_t{}, alloc, 7 );
 
             EXPECT( ct->value() == 7 );
             EXPECT( allocs   == 1 );
             EXPECT( deallocs == 0 );
 
-            // ct.~indirect_value();
+            // ct.~indirect();
         }
         EXPECT( allocs   == 1 );
         EXPECT( deallocs == 1 );
@@ -1396,7 +1396,7 @@ CASE( "allocate_indirect_value(): Allows to in-place construct an indirect value
         };
 
         // Seems to abort on gcc/clang: more than one exception in flight?
-        // EXPECT_THROWS( allocate_indirect_value<ThrowOnConstruct>( std::allocator_arg_t{}, alloc ) );
+        // EXPECT_THROWS( allocate_indirect<ThrowOnConstruct>( std::allocator_arg_t{}, alloc ) );
 
         // EXPECT( allocs   == 1 );
         // EXPECT( deallocs == 1 );
@@ -1405,8 +1405,8 @@ CASE( "allocate_indirect_value(): Allows to in-place construct an indirect value
 
 CASE( "swap(): Allows to swap" )
 {
-    indirect_value<int> iv3( new int( 3 ) );
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv3( new int( 3 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     swap( iv3, iv7 );
 
@@ -1414,13 +1414,13 @@ CASE( "swap(): Allows to swap" )
     EXPECT( *iv7 == 3 );
 }
 
-CASE( "relational operators: Allows to compare indirect_value-s" " [extension]" )
+CASE( "relational operators: Allows to compare indirect-s" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_RELATIONAL_OPERATORS
 
-    indirect_value<int> iv3( new int( 3 ) );
-    indirect_value<int> iv7( new int( 7 ) );
-    indirect_value<int> iv9( new int( 9 ) );
+    indirect<int> iv3( new int( 3 ) );
+    indirect<int> iv7( new int( 7 ) );
+    indirect<int> iv9( new int( 9 ) );
 
     EXPECT( (iv7 == iv7) );
     EXPECT( (iv7 == iv7) );
@@ -1444,11 +1444,11 @@ CASE( "relational operators: Allows to compare indirect_value-s" " [extension]" 
 #endif
 }
 
-CASE( "relational operators: Allows to compare indirect_value with nullptr" " [extension]" )
+CASE( "relational operators: Allows to compare indirect with nullptr" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_RELATIONAL_OPERATORS
-    indirect_value<int> iv0;
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv0;
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT(     (    iv0 == nullptr) );
     EXPECT(     (nullptr == iv0    ) );
@@ -1475,11 +1475,11 @@ CASE( "relational operators: Allows to compare indirect_value with nullptr" " [e
 #endif
 }
 
-CASE( "relational operators: Allows to compare indirect_value with value convertible to its value_type" " [extension]" )
+CASE( "relational operators: Allows to compare indirect with value convertible to its value_type" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_RELATIONAL_OPERATORS
 
-    indirect_value<int> iv7( new int( 7 ) );
+    indirect<int> iv7( new int( 7 ) );
 
     EXPECT( (iv7 ==   7) );
     EXPECT( (  7 == iv7) );
@@ -1506,12 +1506,12 @@ CASE( "relational operators: Allows to compare indirect_value with value convert
 #endif
 }
 
-CASE( "relational operators: Allows to 3-way compare indirect_value-s" " [extension]" )
+CASE( "relational operators: Allows to 3-way compare indirect-s" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_RELATIONAL_OPERATORS
 #if defined( __cpp_lib_three_way_comparison )
-    const indirect_value<int> iv3( nonstd_lite_in_place(int), 3 );
-    const indirect_value<int> iv7( nonstd_lite_in_place(int), 7 );
+    const indirect<int> iv3( nonstd_lite_in_place(int), 3 );
+    const indirect<int> iv7( nonstd_lite_in_place(int), 7 );
 
     EXPECT( (iv3 <=> iv3) == 0 );
     EXPECT( (iv3 <=> iv7) <  0 );
@@ -1524,11 +1524,11 @@ CASE( "relational operators: Allows to 3-way compare indirect_value-s" " [extens
 #endif
 }
 
-CASE( "relational operators: Allows to 3-way compare indirect_value with nullptr" " [extension]" )
+CASE( "relational operators: Allows to 3-way compare indirect with nullptr" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_RELATIONAL_OPERATORS
 #if defined( __cpp_lib_three_way_comparison )
-    indirect_value<int> iv7( nonstd_lite_in_place(int), 7 );
+    indirect<int> iv7( nonstd_lite_in_place(int), 7 );
 
     EXPECT( (iv7     <=> nullptr) > 0 );
     EXPECT( (nullptr <=>     iv7) < 0 );
@@ -1540,11 +1540,11 @@ CASE( "relational operators: Allows to 3-way compare indirect_value with nullptr
 #endif
 }
 
-CASE( "relational operators: Allows to 3-way compare indirect_value with value convertible to its value_type" " [extension]" )
+CASE( "relational operators: Allows to 3-way compare indirect with value convertible to its value_type" " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_RELATIONAL_OPERATORS
 #if defined( __cpp_lib_three_way_comparison )
-    indirect_value<int> iv7( nonstd_lite_in_place(int), 7 );
+    indirect<int> iv7( nonstd_lite_in_place(int), 7 );
 
     EXPECT( (  7 <=> iv7) == 0);
     EXPECT( (iv7 <=>   7) == 0 );
@@ -1588,37 +1588,37 @@ struct hash< ProvidesThrowingHash >
 };
 }  // namespace std
 
-CASE( "std::hash: Allows to hash an indirect_value"  " [extension]" )
+CASE( "std::hash: Allows to hash an indirect"  " [extension]" )
 {
 #if !nsiv_CONFIG_NO_EXTENSION_STD_HASH
-    // The hash value for empty indirect_value is zero:
+    // The hash value for empty indirect is zero:
     {
-        const indirect_value<int> empty;
+        const indirect<int> empty;
 
-        EXPECT( std::hash<indirect_value<int>>{}(empty) == 0 );
+        EXPECT( std::hash<indirect<int>>{}(empty) == 0 );
         EXPECT( IsHashable<int>::IsNoexcept );                  // compile-time
-        EXPECT( IsHashable<indirect_value<int>>::IsNoexcept );  // compile-time
+        EXPECT( IsHashable<indirect<int>>::IsNoexcept );  // compile-time
     }
 
     // Equal hash value for same value and underlying indirect value:
     {
-        const indirect_value<int> iv( nonstd_lite_in_place(int), 7 );
+        const indirect<int> iv( nonstd_lite_in_place(int), 7 );
 
-        EXPECT( std::hash<int>{}(*iv) == std::hash<indirect_value<int>>{}(iv) );
+        EXPECT( std::hash<int>{}(*iv) == std::hash<indirect<int>>{}(iv) );
     }
 
     // A type which is not hashable:
     {
         EXPECT_NOT( IsHashable<                 ProvidesNoHash  >::value );
-        EXPECT_NOT( IsHashable< indirect_value< ProvidesNoHash >>::value );
+        EXPECT_NOT( IsHashable< indirect< ProvidesNoHash >>::value );
     }
 
     // A type which is hashable and std::hash throws:
     {
         EXPECT(     IsHashable<                 ProvidesThrowingHash  >::value      );
-        EXPECT(     IsHashable< indirect_value< ProvidesThrowingHash >>::value      );
+        EXPECT(     IsHashable< indirect< ProvidesThrowingHash >>::value      );
         EXPECT_NOT( IsHashable<                 ProvidesThrowingHash  >::IsNoexcept );
-        EXPECT_NOT( IsHashable< indirect_value< ProvidesThrowingHash >>::IsNoexcept );
+        EXPECT_NOT( IsHashable< indirect< ProvidesThrowingHash >>::IsNoexcept );
     }
 #else
     EXPECT( !!"std::hash: std::hash specialisation is not available (nsiv_CONFIG_NO_EXTENSION_STD_HASH=1)" );

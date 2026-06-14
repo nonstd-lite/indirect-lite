@@ -28,7 +28,7 @@
 namespace lest {
 
     template<typename T, typename C, typename D>
-    std::ostream & operator<<( std::ostream & os, nonstd::indirect_value<T,C,D> const & iv );
+    std::ostream & operator<<( std::ostream & os, nonstd::indirect<T,C,D> const & iv );
 }
 
 #include "lest.hpp"
@@ -48,9 +48,9 @@ extern lest::tests & specification() scope_ATTRIBUTE_EXT_VIS;
 namespace lest {
 
     template< typename T, typename C, typename D >
-    std::ostream & operator<<( std::ostream & os, nonstd::indirect_value<T,C,D> const & iv )
+    std::ostream & operator<<( std::ostream & os, nonstd::indirect<T,C,D> const & iv )
     {
-        return os << "[indirect_value:" << (bool(iv) ? *iv : -1) << "]";
+        return os << "[indirect:" << (bool(iv) ? *iv : -1) << "]";
     }
 }
 

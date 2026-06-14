@@ -1,7 +1,7 @@
 //
-// Copyright (c) 2023-2023 Martin Moene
+// Copyright (c) 2023-2026 Martin Moene
 //
-// https://github.com/martinmoene/indirect-value-lite (p1950)
+// https://github.com/martinmoene/indirect-lite (p1950, p3019)
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -54,7 +54,7 @@
 #define nsiv_HAVE_TWEAK_HEADER  1
 #else
 #define nsiv_HAVE_TWEAK_HEADER  0
-//# pragma message("indirect_value.hpp: Note: Tweak header not supported.")
+//# pragma message("indirect.hpp: Note: Tweak header not supported.")
 #endif
 
 // scope selection and configuration:
@@ -105,14 +105,14 @@
 #define nsiv_CPP20_OR_GREATER  ( nsiv_CPLUSPLUS >= 202002L )
 #define nsiv_CPP23_OR_GREATER  ( nsiv_CPLUSPLUS >= 202300L )
 
-// If std::indirect_value is available, it's in <memory>, included further below.
+// If std::indirect is available, it's in <memory>, included further below.
 
 #define nsiv_HAVE_STD_INDIRECT  0
 
 #define nsiv_USES_STD_INDIRECT  ( (nsiv_CONFIG_SELECT_INDIRECT == nsiv_INDIRECT_STD) || ((nsiv_CONFIG_SELECT_INDIRECT == nsiv_INDIRECT_DEFAULT) && nsiv_HAVE_STD_INDIRECT) )
 
 //
-// in_place: code duplicated in any-lite, expected-lite, indirect_value, optional-lite, value-ptr-lite, variant-lite:
+// in_place: code duplicated in any-lite, expected-lite, indirect, optional-lite, value-ptr-lite, variant-lite:
 //
 
 #ifndef nonstd_lite_HAVE_IN_PLACE_TYPES
@@ -200,11 +200,11 @@ inline in_place_t in_place_index( detail::in_place_index_tag<K> /*unused*/ = det
 #endif // nonstd_lite_HAVE_IN_PLACE_TYPES
 
 //
-// Using std::indirect_value, or nonstd::indirect_value:
+// Using std::indirect, or nonstd::indirect:
 //
 
 #if nsiv_USES_STD_INDIRECT
-// std::indirect_value is non-existent (yet)
+// std::indirect is non-existent (yet)
 #else // nsiv_USES_STD_INDIRECT
 
 // half-open range [lo..hi):
@@ -570,13 +570,13 @@ struct is_nothrow_swappable : decltype( detail::is_nothrow_swappable::test<T>(0)
 
 // 4.1. Additions in [memory.syn] 20.2.2:
 
-// 4.?. X.X Class bad_indirect_value_access [...] - Extension
+// 4.?. X.X Class bad_indirect_access [...] - Extension
 
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    class bad_indirect_value_access : public std::exception
+    class bad_indirect_access : public std::exception
     {
     public:
-        const char * what() const noexcept override { return "bad indirect_value access"; }
+        const char * what() const noexcept override { return "bad indirect access"; }
     };
 #endif
 
@@ -601,9 +601,9 @@ struct default_copy
     nsiv_constexpr T * operator()( T const & t ) const { return new T(t); }
 };
 
-// 4.4. X.Z Class template indirect_value [indirect_value]
-// 4.4.1. X.Z.1 Class template indirect_value general [indirect_value.general]
-// 4.4.2. X.Z.2 Class template indirect_value synopsis [indirect_value.synopsis]
+// 4.4. X.Z Class template indirect [indirect]
+// 4.4.1. X.Z.1 Class template indirect general [indirect.general]
+// 4.4.2. X.Z.2 Class template indirect synopsis [indirect.synopsis]
 
 // MSVC requires __declspec(empty_bases) to apply empty base class optimisation (EBCO) for more than one base class:
 // - https://en.cppreference.com/w/cpp/language/ebo
@@ -621,14 +621,14 @@ template
     typename C
     , bool CanBeEmptyBaseClass = std11::is_empty<C>::value && !std14::is_final<C>::value
 >
-class indirect_value_copy_base
+class indirect_copy_base
 {
 protected:
-    nsiv_constexpr indirect_value_copy_base() = default;
+    nsiv_constexpr indirect_copy_base() = default;
 
-    nsiv_constexpr indirect_value_copy_base( C const & copier )
+    nsiv_constexpr indirect_copy_base( C const & copier )
         : m_copier( copier ) {}
-    nsiv_constexpr indirect_value_copy_base( C && copier )
+    nsiv_constexpr indirect_copy_base( C && copier )
         : m_copier( std::move( copier ) ) {}
 
     nsiv_constexpr14 C &       get()       nsiv_noexcept { return m_copier; }
@@ -638,14 +638,14 @@ protected:
 };
 
 template< typename C >
-class indirect_value_copy_base< C, true > : private C
+class indirect_copy_base< C, true > : private C
 {
 protected:
-    nsiv_constexpr indirect_value_copy_base() = default;
+    nsiv_constexpr indirect_copy_base() = default;
 
-    nsiv_constexpr indirect_value_copy_base( C const & copier )
+    nsiv_constexpr indirect_copy_base( C const & copier )
         : C( copier ) {}
-    nsiv_constexpr indirect_value_copy_base( C && copier )
+    nsiv_constexpr indirect_copy_base( C && copier )
         : C( std::move( copier ) ) {}
 
     nsiv_constexpr14 C &       get()       nsiv_noexcept { return *this; }
@@ -659,14 +659,14 @@ template
     typename D
     , bool CanBeEmptyBaseClass = std11::is_empty<D>::value && !std14::is_final<D>::value
 >
-class indirect_value_delete_base
+class indirect_delete_base
 {
 protected:
-    nsiv_constexpr indirect_value_delete_base() = default;
+    nsiv_constexpr indirect_delete_base() = default;
 
-    nsiv_constexpr indirect_value_delete_base( D const & deleter )
+    nsiv_constexpr indirect_delete_base( D const & deleter )
         : m_deleter( deleter ) {}
-    nsiv_constexpr indirect_value_delete_base( D && deleter )
+    nsiv_constexpr indirect_delete_base( D && deleter )
         : m_deleter( std::move( deleter ) ) {}
 
     nsiv_constexpr14 D &       get()       nsiv_noexcept { return m_deleter; }
@@ -676,21 +676,21 @@ protected:
 };
 
 template< typename D >
-class indirect_value_delete_base< D, true > : private D
+class indirect_delete_base< D, true > : private D
 {
 protected:
-    nsiv_constexpr indirect_value_delete_base() = default;
+    nsiv_constexpr indirect_delete_base() = default;
 
-    nsiv_constexpr indirect_value_delete_base( const D & deleter )
+    nsiv_constexpr indirect_delete_base( const D & deleter )
         : D( deleter) {}
-    nsiv_constexpr indirect_value_delete_base( D && deleter )
+    nsiv_constexpr indirect_delete_base( D && deleter )
         : D( std::move( deleter ) ) {}
 
     nsiv_constexpr14 D &       get()       nsiv_noexcept { return *this; }
     nsiv_constexpr   D const & get() const nsiv_noexcept { return *this; }
 };
 
-// Class indirect_value:
+// Class indirect:
 
 template
 <
@@ -698,26 +698,26 @@ template
     , typename C = default_copy<T>
     , typename D = typename copier_traits<C>::deleter_type
 >
-class nsiv_EMPTY_BASES_DECORATION indirect_value
-    : private indirect_value_copy_base< C >
-    , private indirect_value_delete_base< D >
+class nsiv_EMPTY_BASES_DECORATION indirect
+    : private indirect_copy_base< C >
+    , private indirect_delete_base< D >
 {
-    using copy_base   = indirect_value_copy_base< C >;
-    using delete_base = indirect_value_delete_base< D >;
+    using copy_base   = indirect_copy_base< C >;
+    using delete_base = indirect_delete_base< D >;
 
 public:
     using value_type = T;
 
     // Constructors:
 
-#if nsiv_BETWEEN( nsiv_COMPILER_GNUC_VERSION, 1, 1000 )
-    nsiv_constexpr indirect_value() = default;
+#if 1 // nsiv_BETWEEN( nsiv_COMPILER_GNUC_VERSION, 1, 1000 )
+    nsiv_constexpr indirect() = default;
 #else
-    nsiv_constexpr indirect_value() nsiv_noexcept = default;
+    nsiv_constexpr indirect() nsiv_noexcept = default;
 #endif
 
-    // Effects       : Constructs a indirect_value which owns p, initializing the stored pointer with p.
-    //                 The copier and deleter of the indirect_value constructed are moved from c and d.
+    // Effects       : Constructs a indirect which owns p, initializing the stored pointer with p.
+    //                 The copier and deleter of the indirect constructed are moved from c and d.
     //                 If p is null, creates an empty object.
     // Constraints   : is_nothrow_move_assignable_v<C> is true.
     //                 is_nothrow_move_assignable_v<D> is true.
@@ -728,45 +728,45 @@ public:
     // Postconditions: bool(*this) == bool(p).
     // Mandates      : The expression d(p) is well-formed.
 
-    nsiv_constexpr explicit indirect_value( T * p, C c = C{}, D d = D{} ) nsiv_noexcept
+    nsiv_constexpr explicit indirect( T * p, C c = C{}, D d = D{} ) nsiv_noexcept
         : copy_base(   std::move( c ) )
         , delete_base( std::move( d ) )
         , m_ptr( p )
     {}
 
-    // Effects       : Move-constructs an indirect_value instance from p.
+    // Effects       : Move-constructs an indirect instance from p.
     //                 If p has a custom copier and deleter then the copier and deleter
-    //                 of the indirect_value constructed are the same as those in p.
+    //                 of the indirect constructed are the same as those in p.
     // Postconditions: *this contains the old value of p.
     //                 p is empty.
 
-    nsiv_constexpr indirect_value( indirect_value const & other )
+    nsiv_constexpr indirect( indirect const & other )
         nsiv_REQUIRES( (!is_complete_v<T>) || std::is_copy_constructible_v<T> )
         : copy_base(   other.get_c() )
         , delete_base( other.get_d() )
         , m_ptr( other.make_raw_copy() )
     {}
 
-    // Effects       : Move-constructs an indirect_value instance from p.
+    // Effects       : Move-constructs an indirect instance from p.
     //                 If p has a custom copier and deleter then the copier and deleter of
-    //                 the indirect_value constructed are the same as those in p.
+    //                 the indirect constructed are the same as those in p.
     // Postconditions: *this contains the old value of p.
     //                 p is empty.
 
-    nsiv_constexpr indirect_value( indirect_value && other ) nsiv_noexcept
+    nsiv_constexpr indirect( indirect && other ) nsiv_noexcept
         : copy_base(   std::move( other.get_c() ) )
         , delete_base( std::move( other.get_d() ) )
         , m_ptr( std14::exchange( other.m_ptr, nullptr ) )
     {}
 
-    // Effects      : Constructs an indirect_value which owns an object of type T
+    // Effects      : Constructs an indirect which owns an object of type T
     //                direct-non-list-initialized with std::forward<Ts>(ts)...
     // Throws       : Any exception thrown by the selected constructor of T or
     //                bad_alloc if required storage cannot be obtained.
     // Preconditions: is_same_v<C, default_copy> && is_same_v<D, default_delete>.
 
     template< typename ...Ts >
-    nsiv_constexpr indirect_value( nonstd_lite_in_place_t(T), Ts &&... ts )
+    nsiv_constexpr indirect( nonstd_lite_in_place_t(T), Ts &&... ts )
           : m_ptr( new T( std::forward<Ts>(ts)...) )
     {}
 
@@ -777,7 +777,7 @@ public:
     //          Otherwise the destructor of the managed object is called.
     // Remarks: The constructor must work with pointer to an complete type T.
 
-    nsiv_constexpr20 ~indirect_value() { reset(); }
+    nsiv_constexpr20 ~indirect() { reset(); }
 
     // Assignment:
 
@@ -788,7 +788,7 @@ public:
     // Returns       : *this.
     // Postconditions: bool(*this) == bool(p).
 
-    nsiv_constexpr14 indirect_value & operator=( indirect_value const & other )
+    nsiv_constexpr14 indirect & operator=( indirect const & other )
         nsiv_REQUIRES( (!is_complete_v<T>) || std::is_copy_constructible_v<T> )
     {
         auto scoped_copy = other.make_scoped_copy();
@@ -810,7 +810,7 @@ public:
     // Postconditions: *this contains the old value of p.
     //                 p is empty.
 
-    nsiv_constexpr14 indirect_value & operator=( indirect_value && other ) nsiv_noexcept
+    nsiv_constexpr14 indirect & operator=( indirect && other ) nsiv_noexcept
     {
         if ( this != &other )
         {
@@ -825,7 +825,7 @@ public:
 
     // Modifiers:
 
-    nsiv_constexpr14 void swap( indirect_value & other )
+    nsiv_constexpr14 void swap( indirect & other )
         nsiv_noexcept_op( std17::is_nothrow_swappable<C>::value && std17::is_nothrow_swappable<D>::value )
     {
         using std::swap;
@@ -863,28 +863,28 @@ public:
     nsiv_constexpr14 T & value() &
     {
         if ( !m_ptr )
-            throw bad_indirect_value_access();
+            throw bad_indirect_access();
         return *m_ptr;
     }
 
     nsiv_constexpr14 T const & value() const &
     {
         if ( !m_ptr )
-            throw bad_indirect_value_access();
+            throw bad_indirect_access();
         return *m_ptr;
     }
 
     nsiv_constexpr14 T && value() &&
     {
         if ( !m_ptr )
-            throw bad_indirect_value_access();
+            throw bad_indirect_access();
         return std::move( *m_ptr );
     }
 
     nsiv_constexpr14 T const && value() const &&
     {
         if ( !m_ptr )
-            throw bad_indirect_value_access();
+            throw bad_indirect_access();
         return std::move( *m_ptr );
     }
 #endif  // nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
@@ -995,33 +995,33 @@ struct allocator_copy : A
 
 } // namespace detail
 
-// indirect_value creation:
+// indirect creation:
 
 // Constraints  : is_constructible_v<U, Ts...> is true.
 // Preconditions: U meets the Cpp17CopyConstructible requirements.
-// Returns      : A indirect_value<T> owning an object of type direct-non-list-initialized with std::forward<Ts>(ts)....
+// Returns      : A indirect<T> owning an object of type direct-non-list-initialized with std::forward<Ts>(ts)....
 // Preconditions: is_same_v<C, default_copy> && is_same_v<D, default_delete>.
 
 template< typename T, typename ...Ts >
-nsiv_constexpr indirect_value<T> make_indirect_value( Ts &&... ts)
+nsiv_constexpr indirect<T> make_indirect( Ts &&... ts)
 {
-    return indirect_value<T>( nonstd_lite_in_place(T), std::forward<Ts>(ts)... );
+    return indirect<T>( nonstd_lite_in_place(T), std::forward<Ts>(ts)... );
 }
 
 // Constraints  : is_constructible_v<U, Ts...> is true.
 // Preconditions: U meets the Cpp17CopyConstructible requirements.
-// Returns      : A indirect_value<T,C,D> owning an object of type direct-non-list-initialized with std::forward<Ts>(ts)....
+// Returns      : A indirect<T,C,D> owning an object of type direct-non-list-initialized with std::forward<Ts>(ts)....
 // Preconditions: is_same_v<C, allocator_copy> && is_same_v<D, allocator_delete>.
 
 template< typename T, typename A = std::allocator<T>, typename... Ts >
-nsiv_constexpr20 auto allocate_indirect_value( std11::allocator_arg_t, A & a, Ts &&... ts )
-    -> indirect_value<T, detail::allocator_copy<T, A>, detail::allocator_delete<T, A>>
+nsiv_constexpr20 auto allocate_indirect( std11::allocator_arg_t, A & a, Ts &&... ts )
+    -> indirect<T, detail::allocator_copy<T, A>, detail::allocator_delete<T, A>>
 {
     auto * ptr = detail::allocate_object<T>(a, std::forward<Ts>(ts)...);
 
     try
     {
-        return indirect_value<T, detail::allocator_copy<T, A>, detail::allocator_delete<T, A>>( ptr, {a}, {a} );
+        return indirect<T, detail::allocator_copy<T, A>, detail::allocator_delete<T, A>>( ptr, {a}, {a} );
     }
     catch (...)
     {
@@ -1030,11 +1030,11 @@ nsiv_constexpr20 auto allocate_indirect_value( std11::allocator_arg_t, A & a, Ts
     }
 }
 
-// indirect_value specialized algorithms:
+// indirect specialized algorithms:
 
 template< typename T, typename C, typename D >
 nsiv_constexpr14 typename std::enable_if< std17::is_swappable<C>::value && std17::is_swappable<D>::value >::type
-swap( indirect_value<T,C,D> & lhs, indirect_value<T,C,D> & rhs )
+swap( indirect<T,C,D> & lhs, indirect<T,C,D> & rhs )
     nsiv_noexcept_op( nsiv_noexcept_op( lhs.swap(rhs) ) )
 {
     lhs.swap( rhs );
@@ -1044,40 +1044,40 @@ swap( indirect_value<T,C,D> & lhs, indirect_value<T,C,D> & rhs )
 
 #if !nsiv_CONFIG_NO_EXTENSION_RELATIONAL_OPERATORS
 
-// Comparison between two indirect_values:
+// Comparison between two indirects:
 
 template< typename T1, typename C1, typename D1, typename T2, typename C2, typename D2 >
-constexpr bool operator==( indirect_value< T1, C1, D1 > const & lhs,  indirect_value< T2, C2, D2 > const & rhs )
+constexpr bool operator==( indirect< T1, C1, D1 > const & lhs,  indirect< T2, C2, D2 > const & rhs )
 {
     return bool( lhs ) == bool( rhs ) && ( !bool( lhs ) || *lhs == *rhs );
 }
 
 template< typename T1, typename C1, typename D1, typename T2, typename C2, typename D2 >
-constexpr bool operator!=( indirect_value< T1, C1, D1 > const & lhs,  indirect_value< T2, C2, D2 > const & rhs )
+constexpr bool operator!=( indirect< T1, C1, D1 > const & lhs,  indirect< T2, C2, D2 > const & rhs )
 {
     return bool( lhs ) != bool( rhs ) || ( bool( lhs ) && *lhs != *rhs );
 }
 
 template< typename T1, typename C1, typename D1, typename T2, typename C2, typename D2 >
-constexpr bool operator<( indirect_value< T1, C1, D1 > const & lhs,  indirect_value< T2, C2, D2 > const & rhs )
+constexpr bool operator<( indirect< T1, C1, D1 > const & lhs,  indirect< T2, C2, D2 > const & rhs )
 {
     return bool( rhs ) && ( !bool( lhs ) || *lhs < *rhs );
 }
 
 template< typename T1, typename C1, typename D1, typename T2, typename C2, typename D2 >
-constexpr bool operator>( indirect_value< T1, C1, D1 > const & lhs,  indirect_value< T2, C2, D2 > const & rhs )
+constexpr bool operator>( indirect< T1, C1, D1 > const & lhs,  indirect< T2, C2, D2 > const & rhs )
 {
     return bool( lhs ) && ( !bool( rhs ) || *lhs > *rhs );
 }
 
 template< typename T1, typename C1, typename D1, typename T2, typename C2, typename D2 >
-constexpr bool operator<=( indirect_value< T1, C1, D1 > const & lhs,  indirect_value< T2, C2, D2 > const & rhs )
+constexpr bool operator<=( indirect< T1, C1, D1 > const & lhs,  indirect< T2, C2, D2 > const & rhs )
 {
     return !bool( lhs ) || ( bool( rhs ) && *lhs <= *rhs );
 }
 
 template< typename T1, typename C1, typename D1, typename T2, typename C2, typename D2 >
-constexpr bool operator>=( indirect_value< T1, C1, D1 > const & lhs,  indirect_value< T2, C2, D2 > const & rhs )
+constexpr bool operator>=( indirect< T1, C1, D1 > const & lhs,  indirect< T2, C2, D2 > const & rhs )
 {
     return !bool( rhs ) || ( bool( lhs ) && *lhs >= *rhs );
 }
@@ -1086,7 +1086,7 @@ constexpr bool operator>=( indirect_value< T1, C1, D1 > const & lhs,  indirect_v
 
 template< typename T1, typename C1, typename D1, std::three_way_comparable_with< T1 > T2, typename C2, typename D2 >
 constexpr std::compare_three_way_result_t< T1, T2 >
-operator<=>( indirect_value< T1, C1, D1 > const & lhs,  indirect_value< T2, C2, D2 > const & rhs )
+operator<=>( indirect< T1, C1, D1 > const & lhs,  indirect< T2, C2, D2 > const & rhs )
 {
     if ( lhs && rhs )
     {
@@ -1099,73 +1099,73 @@ operator<=>( indirect_value< T1, C1, D1 > const & lhs,  indirect_value< T2, C2, 
 // Comparisons with nullptr_t:
 
 template< typename T, typename C, typename D >
-constexpr bool operator==( indirect_value< T, C, D > const & lhs, std::nullptr_t ) noexcept
+constexpr bool operator==( indirect< T, C, D > const & lhs, std::nullptr_t ) noexcept
 {
     return !lhs;
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator==( std::nullptr_t, indirect_value< T, C, D > const & rhs ) noexcept
+constexpr bool operator==( std::nullptr_t, indirect< T, C, D > const & rhs ) noexcept
 {
     return !rhs;
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator!=( indirect_value< T, C, D > const & lhs, std::nullptr_t ) noexcept
+constexpr bool operator!=( indirect< T, C, D > const & lhs, std::nullptr_t ) noexcept
 {
     return bool( lhs );
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator!=( std::nullptr_t, indirect_value< T, C, D > const & rhs ) noexcept
+constexpr bool operator!=( std::nullptr_t, indirect< T, C, D > const & rhs ) noexcept
 {
     return bool( rhs );
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator<( indirect_value< T, C, D > const &, std::nullptr_t ) noexcept
+constexpr bool operator<( indirect< T, C, D > const &, std::nullptr_t ) noexcept
 {
     return false;
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator<( std::nullptr_t, indirect_value< T, C, D > const & rhs ) noexcept
+constexpr bool operator<( std::nullptr_t, indirect< T, C, D > const & rhs ) noexcept
 {
     return bool( rhs );
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator>( indirect_value< T, C, D > const & lhs, std::nullptr_t ) noexcept
+constexpr bool operator>( indirect< T, C, D > const & lhs, std::nullptr_t ) noexcept
 {
     return bool( lhs );
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator>( std::nullptr_t, indirect_value< T, C, D > const & ) noexcept
+constexpr bool operator>( std::nullptr_t, indirect< T, C, D > const & ) noexcept
 {
     return false;
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator<=( indirect_value< T, C, D > const & lhs, std::nullptr_t ) noexcept
+constexpr bool operator<=( indirect< T, C, D > const & lhs, std::nullptr_t ) noexcept
 {
     return !lhs;
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator<=( std::nullptr_t, indirect_value< T, C, D > const & ) noexcept
+constexpr bool operator<=( std::nullptr_t, indirect< T, C, D > const & ) noexcept
 {
     return true;
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator>=( indirect_value< T, C, D > const &, std::nullptr_t ) noexcept
+constexpr bool operator>=( indirect< T, C, D > const &, std::nullptr_t ) noexcept
 {
     return true;
 }
 
 template< typename T, typename C, typename D >
-constexpr bool operator>=( std::nullptr_t, indirect_value< T, C, D > const & rhs ) noexcept
+constexpr bool operator>=( std::nullptr_t, indirect< T, C, D > const & rhs ) noexcept
 {
     return !rhs;
 }
@@ -1173,7 +1173,7 @@ constexpr bool operator>=( std::nullptr_t, indirect_value< T, C, D > const & rhs
 #if defined( __cpp_lib_three_way_comparison ) && defined( __cpp_lib_concepts )
 
 template< typename T, typename C, typename D >
-constexpr std::strong_ordering operator<=>( indirect_value< T, C, D > const & lhs, std::nullptr_t )
+constexpr std::strong_ordering operator<=>( indirect< T, C, D > const & lhs, std::nullptr_t )
 {
     return bool( lhs ) <=> false;
 }
@@ -1210,7 +1210,7 @@ struct _enable_if_comparable_with_greater_equal
     : _enable_if_convertible_to_bool< decltype( std::declval< const LHS & >() >= std::declval< const RHS & >() ) >{};
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<U>::value, int >::type = 0 >
-constexpr auto operator==( indirect_value< T, C, D > const & lhs, U const & rhs )
+constexpr auto operator==( indirect< T, C, D > const & lhs, U const & rhs )
     -> typename _enable_if_comparable_with_equal< T, U >::type
         // nsiv_REQUIRES( (!std::is_null_pointer_v<U>) )
 {
@@ -1218,7 +1218,7 @@ constexpr auto operator==( indirect_value< T, C, D > const & lhs, U const & rhs 
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<T>::value, int >::type = 0 >
-constexpr auto operator==( T const & lhs, indirect_value< U, C, D > const & rhs )
+constexpr auto operator==( T const & lhs, indirect< U, C, D > const & rhs )
     -> typename _enable_if_comparable_with_equal< T, U >::type
         // nsiv_REQUIRES( (!std::is_null_pointer_v<T>) )
 {
@@ -1226,70 +1226,70 @@ constexpr auto operator==( T const & lhs, indirect_value< U, C, D > const & rhs 
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<U>::value, int >::type = 0 >
-constexpr auto operator!=( indirect_value< T, C, D > const & lhs, U const & rhs )
+constexpr auto operator!=( indirect< T, C, D > const & lhs, U const & rhs )
     -> typename _enable_if_comparable_with_not_equal< T, U >::type
 {
     return !lhs || *lhs != rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<T>::value, int >::type = 0 >
-constexpr auto operator!=( T const & lhs, indirect_value< U, C, D > const & rhs )
+constexpr auto operator!=( T const & lhs, indirect< U, C, D > const & rhs )
     -> typename _enable_if_comparable_with_not_equal< T, U >::type
 {
     return !rhs || lhs != *rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<U>::value, int >::type = 0 >
-constexpr auto operator<( indirect_value< T, C, D > const & lhs, U const & rhs )
+constexpr auto operator<( indirect< T, C, D > const & lhs, U const & rhs )
     -> typename _enable_if_comparable_with_less< T, U >::type
 {
     return !lhs || *lhs < rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<T>::value, int >::type = 0 >
-constexpr auto operator<( T const & lhs, indirect_value< U, C, D > const & rhs )
+constexpr auto operator<( T const & lhs, indirect< U, C, D > const & rhs )
     -> typename _enable_if_comparable_with_less< T, U >::type
 {
     return rhs && lhs < *rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<U>::value, int >::type = 0 >
-constexpr auto operator>( indirect_value< T, C, D > const & lhs, U const & rhs )
+constexpr auto operator>( indirect< T, C, D > const & lhs, U const & rhs )
     -> typename _enable_if_comparable_with_greater< T, U >::type
 {
     return lhs && *lhs > rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<T>::value, int >::type = 0 >
-constexpr auto operator>( T const & lhs, indirect_value< U, C, D > const & rhs )
+constexpr auto operator>( T const & lhs, indirect< U, C, D > const & rhs )
     -> typename _enable_if_comparable_with_greater< T, U >::type
 {
     return !rhs || lhs > *rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<U>::value, int >::type = 0 >
-constexpr auto operator<=( indirect_value< T, C, D > const & lhs, U const & rhs )
+constexpr auto operator<=( indirect< T, C, D > const & lhs, U const & rhs )
     -> typename _enable_if_comparable_with_less_equal< T, U >::type
 {
     return !lhs || *lhs <= rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<T>::value, int >::type = 0 >
-constexpr auto operator<=( T const & lhs, indirect_value< U, C, D > const & rhs )
+constexpr auto operator<=( T const & lhs, indirect< U, C, D > const & rhs )
     -> typename _enable_if_comparable_with_less_equal< T, U >::type
 {
     return rhs && lhs <= *rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<U>::value, int >::type = 0 >
-constexpr auto operator>=( indirect_value< T, C, D > const & lhs, U const & rhs )
+constexpr auto operator>=( indirect< T, C, D > const & lhs, U const & rhs )
     -> typename _enable_if_comparable_with_greater_equal< T, U >::type
 {
     return lhs && *lhs >= rhs;
 }
 
 template< typename T, typename C, typename D, typename U, typename std::enable_if< !std::is_null_pointer<T>::value, int >::type = 0 >
-constexpr auto operator>=( T const & lhs, indirect_value< U, C, D > const & rhs )
+constexpr auto operator>=( T const & lhs, indirect< U, C, D > const & rhs )
     -> typename _enable_if_comparable_with_greater_equal< T, U >::type
 {
     return !rhs || lhs >= *rhs;
@@ -1298,14 +1298,14 @@ constexpr auto operator>=( T const & lhs, indirect_value< U, C, D > const & rhs 
 #if defined( __cpp_lib_three_way_comparison ) && defined( __cpp_lib_concepts )
 
 template< typename >
-inline constexpr bool _is_indirect_value_v = false;
+inline constexpr bool _is_indirect_v = false;
 
 template< typename T, typename C, typename D >
-inline constexpr bool _is_indirect_value_v< indirect_value< T, C, D > > = true;
+inline constexpr bool _is_indirect_v< indirect< T, C, D > > = true;
 
 template< typename T, typename C, typename D, typename U >
-    requires( !_is_indirect_value_v< U > ) && std::three_way_comparable_with< T, U >
-std::compare_three_way_result_t< T, U > operator<=>( indirect_value< T, C, D > const & lhs, U const & rhs )
+    requires( !_is_indirect_v< U > ) && std::three_way_comparable_with< T, U >
+std::compare_three_way_result_t< T, U > operator<=>( indirect< T, C, D > const & lhs, U const & rhs )
 {
     return bool( lhs ) ? *lhs <=> rhs : std::strong_ordering::less;
 }
@@ -1348,9 +1348,9 @@ struct _conditionally_enabled_hash< T, false >
 
 namespace std {
 template< typename T, typename C, typename D >
-struct hash< ::nonstd::iv::indirect_value<T, C, D> >
+struct hash< ::nonstd::iv::indirect<T, C, D> >
     : ::nonstd::iv::_conditionally_enabled_hash<
-        ::nonstd::iv::indirect_value<T, C, D>
+        ::nonstd::iv::indirect<T, C, D>
         , std::is_default_constructible<hash<T> >::value
     >{};
 } // namespace std
@@ -1364,15 +1364,15 @@ namespace nonstd {
     using nonstd::iv::default_copy;
     using nonstd::iv::copier_traits;
 
-    using nonstd::iv::indirect_value;
+    using nonstd::iv::indirect;
 
-    using nonstd::iv::make_indirect_value;
-    using nonstd::iv::allocate_indirect_value;
+    using nonstd::iv::make_indirect;
+    using nonstd::iv::allocate_indirect;
 
     using nonstd::iv::swap;
 
 #if !nsiv_CONFIG_NO_EXTENSION_VALUE_MEMBERS
-    using nonstd::iv::bad_indirect_value_access;
+    using nonstd::iv::bad_indirect_access;
 #endif
 
 #if !nsiv_CONFIG_NO_EXTENSION_RELATIONAL_OPERATORS
