@@ -1,8 +1,8 @@
-# indirect-value-lite
+# indirect-lite
 
-indirect_value lite – An indirect value-type for C++11 and later in a single-file header-only library (p1950)
+indirect lite – An indirect value-type for C++11 and later in a single-file header-only library (p1950, p3019)
 
-[![Language](https://img.shields.io/badge/C%2B%2B-11/14/17/20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-BSL-blue.svg)](https://opensource.org/licenses/BSL-1.0) [![Build Status](https://github.com/martinmoene/indirect-value-lite/actions/workflows/ci.yml/badge.svg)](https://github.com/martinmoene/indirect-value-lite/actions/workflows/ci.yml) [![Version](https://badge.fury.io/gh/martinmoene%2Findirect-value-lite.svg)](https://github.com/martinmoene/indirect-value-lite/releases) [![download](https://img.shields.io/badge/latest-download-blue.svg)](https://github.com/martinmoene/indirect-value-lite/blob/master/include/nonstd/indirect_value.hpp) <!--[![Conan](https://img.shields.io/badge/on-conan-blue.svg)](https://conan.io/center/indirect-value-lite) [![Try it on wandbox](https://img.shields.io/badge/on-wandbox-blue.svg)]() -->[![Try it on godbolt online](https://img.shields.io/badge/on-godbolt-blue.svg)](https://godbolt.org/z/s9j8njMM9)
+[![Language](https://img.shields.io/badge/C%2B%2B-11/14/17/20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-BSL-blue.svg)](https://opensource.org/licenses/BSL-1.0) [![Build Status](https://github.com/martinmoene/indirect-value-lite/actions/workflows/ci.yml/badge.svg)](https://github.com/martinmoene/indirect-value-lite/actions/workflows/ci.yml) [![Version](https://badge.fury.io/gh/martinmoene%2Findirect-value-lite.svg)](https://github.com/martinmoene/indirect-value-lite/releases) [![download](https://img.shields.io/badge/latest-download-blue.svg)](https://github.com/martinmoene/indirect-value-lite/blob/master/include/nonstd/indirect.hpp) <!--[![Conan](https://img.shields.io/badge/on-conan-blue.svg)](https://conan.io/center/indirect-value-lite) [![Try it on wandbox](https://img.shields.io/badge/on-wandbox-blue.svg)]() -->[![Try it on godbolt online](https://img.shields.io/badge/on-godbolt-blue.svg)](https://godbolt.org/z/s9j8njMM9)
 
 **Contents**  
 
@@ -13,7 +13,7 @@ indirect_value lite – An indirect value-type for C++11 and later in a single-f
 - [Installation](#installation)
 - [Synopsis](#synopsis)
 - [Presentations](#presentations)
-- [Other implementations of indirect_value](#other-implementations-of-indirect_value)
+- [Other implementations of indirect](#other-implementations-of-indirect)
 - [Notes and references](#notes-and-references)
 - [Appendix](#appendix)
 
@@ -27,11 +27,11 @@ indirect_value lite – An indirect value-type for C++11 and later in a single-f
 #include <array>
 
 using stdarr = std::array< int, 10 >;
-using Vector = nonstd::indirect_value< stdarr >;
+using Vector = nonstd::indirect< stdarr >;
 
 int main()
 {
-    Vector src = nonstd::make_indirect_value<stdarr>( stdarr( {0, 1, 2, 3, 4, 5, 6, 42} ) );
+    Vector src = nonstd::make_indirect<stdarr>( stdarr( {0, 1, 2, 3, 4, 5, 6, 42} ) );
 
     Vector dst = src;
 
@@ -49,41 +49,41 @@ $ echo $?
 
 ## In a nutshell
 
-**indirect_value lite** is a single-file header-only library to provide `indirect_value` type proposed for [C++23](http://wg21.link/p1950) for use with C++11 and later. If and when available, the standard library is used, unless [configured](#configuration) otherwise.
+**indirect lite** is a single-file header-only library to provide `indirect` type proposed for [C++23](http://wg21.link/p1950) for use with C++11 and later. If and when available, the standard library is used, unless [configured](#configuration) otherwise.
 
-**Features and properties of indirect_value lite** are ease of installation (single header), freedom of dependencies other than the standard library. *indirect_value lite* shares the approach to in-place tags with any-lite, expected-lite, optional-lite and with variant-lite and these libraries can be used together.
+**Features and properties of indirect lite** are ease of installation (single header), freedom of dependencies other than the standard library. *indirect lite* shares the approach to in-place tags with any-lite, expected-lite, optional-lite and with variant-lite and these libraries can be used together.
 
-**Limitations of indirect_value lite** are ... \[*to be summed up*\].
+**Limitations of indirect lite** are ... \[*to be summed up*\].
 
 ## License
 
-*indirect_value lite* is distributed under the [Boost Software License](https://github.com/martinmoene/indirect-value-lite/blob/master/LICENSE.txt). It contains portions of the reference implementation by the *The Indirect Value Authors*, which has [MIT copyright](https://github.com/jbcoe/indirect_value/blob/main/LICENSE.txt).
+*indirect lite* is distributed under the [Boost Software License](https://github.com/martinmoene/indirect-value-lite/blob/master/LICENSE.txt). It contains portions of the reference implementation by the *The Indirect Value Authors*, which has [MIT copyright](https://github.com/jbcoe/indirect/blob/main/LICENSE.txt).
 
 ## Dependencies
 
-*indirect_value lite* has no other dependencies than the [C++ standard library](http://en.cppreference.com/w/cpp/header).
+*indirect lite* has no other dependencies than the [C++ standard library](http://en.cppreference.com/w/cpp/header).
 
 ## Installation
 
-*indirect_value lite* is a single-file header-only library. Put `indirect_value.hpp` in the [include](include) folder directly into the project source tree or somewhere reachable from your project.
+*indirect lite* is a single-file header-only library. Put `indirect.hpp` in the [include](include) folder directly into the project source tree or somewhere reachable from your project.
 
 ## Synopsis
 
-- [Documentation of `class indirect_value`](#documentation-of-class-indirect_value)
+- [Documentation of `class indirect`](#documentation-of-class-indirect)
 - [Configuration](#configuration)
 
-### Documentation of class indirect_value
+### Documentation of class indirect
 
-\[*Envisioned*\] Depending on the compiler and C++ standard used, *indirect_value lite* behaves less or more like the standard's version. To get an idea of the capabilities of *indirect_value lite* with your configuration, look at the output of the [tests](test/indirect_value.t.cpp), issuing `indirect_value-main.t --pass @`.
+\[*Envisioned*\] Depending on the compiler and C++ standard used, *indirect lite* behaves less or more like the standard's version. To get an idea of the capabilities of *indirect lite* with your configuration, look at the output of the [tests](test/indirect.t.cpp), issuing `indirect-main.t --pass @`.
 
-There's no standard documentation available yet at cppreference for [`class indirect_value`](https://en.cppreference.com/w/cpp/???/indirect_value), which is proposed to be part of the [C++ dynamic memory management library](https://en.cppreference.com/w/cpp/memory).
+There's no standard documentation available yet at cppreference for [`class indirect`](https://en.cppreference.com/w/cpp/???/indirect), which is proposed to be part of the [C++ dynamic memory management library](https://en.cppreference.com/w/cpp/memory).
 
 #### Types and values in namespace nonstd
 
 | Purpose               | Type / value                          | Notes                                           |
 | --------------------- | ------------------------------------- | ----------------------------------------------- |
-| Indirect value type   | class **indirect_value**              | &nbsp;                                          |
-| Error reporting       | class **bad_indirect_value_access**   | (extension)                                     |
+| Indirect value type   | class **indirect**                    | &nbsp;                                          |
+| Error reporting       | class **bad_indirect_access**         | (extension)                                     |
 | Hash                  | class **std::hash**                   | specialisation (extension)                      |
 | &nbsp;                | &nbsp;                                | &nbsp;                                          |
 | In-place construction | struct **in_place_tag**               | &nbsp;                                          |
@@ -100,74 +100,74 @@ There's no standard documentation available yet at cppreference for [`class indi
 | &nbsp;                | **nonstd_lite_in_place_type_t**( T)   | macro for alias template in_place_type_t&lt;T>  |
 | &emsp;(variant)       | **nonstd_lite_in_place_index_t**( T ) | macro for alias template in_place_index_t&lt;T> |
 
-#### Interface of *indirect_value lite*
+#### Interface of *indirect lite*
 
-| Kind                 | Std    | Method                                                                                          | Result                       |
-| -------------------- | ------ | ----------------------------------------------------------------------------------------------- | ---------------------------- |
-| Types                | &nbsp; | **value_type**                                                                                  | T template type              |
-| &nbsp;               | &nbsp; | **copier_type**                                                                                 | C template type (extension)  |
-| &nbsp;               | &nbsp; | **deleter_type**                                                                                | D template type (extension)  |
-| Construction         | &nbsp; | constexpr **indirect_value**() noexcept                                                         | default-construct            |
-| &nbsp;               | &nbsp; | constexpr explicit **indirect_value**(T * p, C c=C{}, D d=D{})                                  | construct, own given pointer |
-| &nbsp;               | &nbsp; | constexpr **indirect_value**(indirect_value const & other)                                      | copy-construct from other    |
-| &nbsp;               | &nbsp; | constexpr **indirect_value**(indirect_value && other) noexcept                                  | move-construct from other    |
-| &nbsp;               | &nbsp; | template&lt;class ...T><br>constexpr **indirect_value**(nonstd_lite_in_place_t(T), Ts &&... ts) | in-place construct           |
-| &nbsp;               | &nbsp; | constexpr ~**indirect_value**()                                                                 | destroy current object       |
-| Assignment<br>&nbsp; | &nbsp; | constexpr indirect_value &<br>**operator=**(indirect_value const & rhs)                         | copy-assign from other       |
-| &nbsp;               | &nbsp; | constexpr indirect_value &<br>**operator=**(indirect_value && rhs) noexcept                     | move-assign from other       |
-| Modifiers            | &nbsp; | constexpr void **swap**(indirect_value & other) noexcept(...)                                   | exchange objects             |
-| Observers            | &nbsp; | constexpr T& **operator***() &                                                                  | owned object                 |
-| &nbsp;               | &nbsp; | constexpr T const & **operator***() const &                                                     | owned object                 |
-| &nbsp;               | &nbsp; | constexpr T && **operator***() && noexcept                                                      | owned object                 |
-| &nbsp;               | &nbsp; | constexpr T const && **operator***() const && noexcept                                          | owned object                 |
-| &nbsp;               | &nbsp; | constexpr T * **operator->**() noexcept                                                         | owned object                 |
-| &nbsp;               | &nbsp; | constexpr T const * **operator->**() const noexcept                                             | owned object                 |
-| &nbsp;               | &nbsp; | constexpr explicit **operator bool**() const noexcept                                           | engaged                      |
-| &nbsp;               | &nbsp; | constexpr bool **has_value**() const noexcept                                                   | engaged (extension)          |
-| &nbsp;               | &nbsp; | constexpr T & **value**() &                                                                     | may throw (extension)        |
-| &nbsp;               | &nbsp; | constexpr T const & **value**() const &                                                         | may throw (extension)        |
-| &nbsp;               | &nbsp; | constexpr T && **value**() &&                                                                   | may throw (extension)        |
-| &nbsp;               | &nbsp; | constexpr T const && **value**() const &&                                                       | may throw (extension)        |
-| &nbsp;               | &nbsp; | constexpr copier_type & **get_copier**() noexcept                                               | (extension)                  |
-| &nbsp;               | &nbsp; | constexpr copier_type const & **get_copier**() const noexcept                                   | (extension)                  |
-| &nbsp;               | &nbsp; | constexpr deleter_type & **get_deleter**() noexcept                                             | (extension)                  |
-| &nbsp;               | &nbsp; | constexpr deleter_type const & **get_deleter**() const noexcept                                 | (extension)                  |
+| Kind                 | Std    | Method                                                                                    | Result                       |
+| -------------------- | ------ | ----------------------------------------------------------------------------------------- | ---------------------------- |
+| Types                | &nbsp; | **value_type**                                                                            | T template type              |
+| &nbsp;               | &nbsp; | **copier_type**                                                                           | C template type (extension)  |
+| &nbsp;               | &nbsp; | **deleter_type**                                                                          | D template type (extension)  |
+| Construction         | &nbsp; | constexpr **indirect**() noexcept                                                         | default-construct            |
+| &nbsp;               | &nbsp; | constexpr explicit **indirect**(T * p, C c=C{}, D d=D{})                                  | construct, own given pointer |
+| &nbsp;               | &nbsp; | constexpr **indirect**(indirect const & other)                                            | copy-construct from other    |
+| &nbsp;               | &nbsp; | constexpr **indirect**(indirect && other) noexcept                                        | move-construct from other    |
+| &nbsp;               | &nbsp; | template&lt;class ...T><br>constexpr **indirect**(nonstd_lite_in_place_t(T), Ts &&... ts) | in-place construct           |
+| &nbsp;               | &nbsp; | constexpr ~**indirect**()                                                                 | destroy current object       |
+| Assignment<br>&nbsp; | &nbsp; | constexpr indirect &<br>**operator=**(indirect const & rhs)                               | copy-assign from other       |
+| &nbsp;               | &nbsp; | constexpr indirect &<br>**operator=**(indirect && rhs) noexcept                           | move-assign from other       |
+| Modifiers            | &nbsp; | constexpr void **swap**(indirect & other) noexcept(...)                                   | exchange objects             |
+| Observers            | &nbsp; | constexpr T& **operator***() &                                                            | owned object                 |
+| &nbsp;               | &nbsp; | constexpr T const & **operator***() const &                                               | owned object                 |
+| &nbsp;               | &nbsp; | constexpr T && **operator***() && noexcept                                                | owned object                 |
+| &nbsp;               | &nbsp; | constexpr T const && **operator***() const && noexcept                                    | owned object                 |
+| &nbsp;               | &nbsp; | constexpr T * **operator->**() noexcept                                                   | owned object                 |
+| &nbsp;               | &nbsp; | constexpr T const * **operator->**() const noexcept                                       | owned object                 |
+| &nbsp;               | &nbsp; | constexpr explicit **operator bool**() const noexcept                                     | engaged                      |
+| &nbsp;               | &nbsp; | constexpr bool **has_value**() const noexcept                                             | engaged (extension)          |
+| &nbsp;               | &nbsp; | constexpr T & **value**() &                                                               | may throw (extension)        |
+| &nbsp;               | &nbsp; | constexpr T const & **value**() const &                                                   | may throw (extension)        |
+| &nbsp;               | &nbsp; | constexpr T && **value**() &&                                                             | may throw (extension)        |
+| &nbsp;               | &nbsp; | constexpr T const && **value**() const &&                                                 | may throw (extension)        |
+| &nbsp;               | &nbsp; | constexpr copier_type & **get_copier**() noexcept                                         | (extension)                  |
+| &nbsp;               | &nbsp; | constexpr copier_type const & **get_copier**() const noexcept                             | (extension)                  |
+| &nbsp;               | &nbsp; | constexpr deleter_type & **get_deleter**() noexcept                                       | (extension)                  |
+| &nbsp;               | &nbsp; | constexpr deleter_type const & **get_deleter**() const noexcept                           | (extension)                  |
 
-#### Algorithms for *indirect_value lite*
+#### Algorithms for *indirect lite*
 
-| Kind                           | Std             | Function                                                                                                           | Result                       |
-| ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
-| Create<br>&nbsp;               | &nbsp;          | template&lt;...> constexpr indirect_value<br>**make_indirect_value**(Ts&&... ts)                                   | in-place construct<br>&nbsp; |
-| &nbsp;                         | &nbsp;          | template&lt;...> constexpr indirect_value<br>**allocate_indirect_value**(std::allocator_arg_t, A & a, Ts &&... ts) | in-place construct<br>&nbsp; |
-| Swap                           | &nbsp;          | void **swap**(indirect_value & lhs, indirect_value & rhs)                                                          | exchange contents            |
-| Relational operators<br>&nbsp; | &nbsp;          | template&lt;...> constexpr bool<br>operator**X**(indirect_value & lhs, indirect_value & rhs)                       | (extension)                  |
-| &nbsp;                         | &nbsp;          | template&lt;...> constexpr bool<br>operator**X**(indirect_value & lhs, std::nullptr_t)                             | (extension)                  |
-| &nbsp;                         | &nbsp;          | template&lt;...> constexpr bool<br>operator**X**(std::nullptr_t, indirect_value & rhs)                             | (extension)                  |
-| Three-way operators            | C++20<br>&nbsp; | template&lt;...> constexpr bool<br>operator**&lt;=>**(...)                                                         | (extension)<br>&nbsp;        |
+| Kind                           | Std             | Function                                                                                               | Result                       |
+| ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------- |
+| Create<br>&nbsp;               | &nbsp;          | template&lt;...> constexpr indirect<br>**make_indirect**(Ts&&... ts)                                   | in-place construct<br>&nbsp; |
+| &nbsp;                         | &nbsp;          | template&lt;...> constexpr indirect<br>**allocate_indirect**(std::allocator_arg_t, A & a, Ts &&... ts) | in-place construct<br>&nbsp; |
+| Swap                           | &nbsp;          | void **swap**(indirect & lhs, indirect & rhs)                                                          | exchange contents            |
+| Relational operators<br>&nbsp; | &nbsp;          | template&lt;...> constexpr bool<br>operator**X**(indirect & lhs, indirect & rhs)                       | (extension)                  |
+| &nbsp;                         | &nbsp;          | template&lt;...> constexpr bool<br>operator**X**(indirect & lhs, std::nullptr_t)                       | (extension)                  |
+| &nbsp;                         | &nbsp;          | template&lt;...> constexpr bool<br>operator**X**(std::nullptr_t, indirect & rhs)                       | (extension)                  |
+| Three-way operators            | C++20<br>&nbsp; | template&lt;...> constexpr bool<br>operator**&lt;=>**(...)                                             | (extension)<br>&nbsp;        |
 
 ### Configuration
 
 #### Tweak header
 
-If the compiler supports [`__has_include()`](https://en.cppreference.com/w/cpp/preprocessor/include), *indirect_value lite* supports the [tweak header](https://vector-of-bool.github.io/2020/10/04/lib-configuration.html) mechanism. Provide your *tweak header* as `nonstd/indirect_value.tweak.hpp` in a folder in the include-search-path. In the tweak header, provide definitions as documented below, like `#define indirect_value_CPLUSPLUS 201103L`.
+If the compiler supports [`__has_include()`](https://en.cppreference.com/w/cpp/preprocessor/include), *indirect lite* supports the [tweak header](https://vector-of-bool.github.io/2020/10/04/lib-configuration.html) mechanism. Provide your *tweak header* as `nonstd/indirect.tweak.hpp` in a folder in the include-search-path. In the tweak header, provide definitions as documented below, like `#define indirect_CPLUSPLUS 201103L`.
 
-#### Select `std::indirect_value` or `nonstd::indirect_value`
+#### Select `std::indirect` or `nonstd::indirect`
 
-The C++ standard does not yet provide type `std::indirect_value`.
+The C++ standard does not yet provide type `std::indirect`.
 
-<!-- At default, *indirect_value lite* uses `std::indirect_value` if it is available and lets you use it via namespace `nonstd`. You can however override this default and explicitly request to use `std::indirect_value` or indirect_value lite's `nonstd::indirect_value` as `nonstd::indirect_value` via the following macros.
+<!-- At default, *indirect lite* uses `std::indirect` if it is available and lets you use it via namespace `nonstd`. You can however override this default and explicitly request to use `std::indirect` or indirect lite's `nonstd::indirect` as `nonstd::indirect` via the following macros.
 
--D<b>indirect_value\_CONFIG\_SELECT\_indirect_value</b>=indirect_value\_SELECT\_indirect_value\_NONSTD  
-Define this to `indirect_value__CONFIG_SELECT_indirect_value_STD` to select `std::indirect_value` as `nonstd::indirect_value`. Define this to `indirect_value_SELECT_indirect_value_NONSTD` to select `nonstd::indirect_value` as `nonstd::indirect_value`. Default is undefined, which has the same effect as defining to `indirect_value_SELECT_indirect_value_NONSTD` currently (this may change to `indirect_value_SELECT_indirect_value_DEFAULT`). -->
+-D<b>indirect\_CONFIG\_SELECT\_indirect</b>=indirect\_SELECT\_indirect\_NONSTD  
+Define this to `indirect__CONFIG_SELECT_indirect_STD` to select `std::indirect` as `nonstd::indirect`. Define this to `indirect_SELECT_indirect_NONSTD` to select `nonstd::indirect` as `nonstd::indirect`. Default is undefined, which has the same effect as defining to `indirect_SELECT_indirect_NONSTD` currently (this may change to `indirect_SELECT_indirect_DEFAULT`). -->
 
 #### Standard selection macro
 
-\-D<b>indirect_value\_CPLUSPLUS</b>=201103L  
+\-D<b>indirect\_CPLUSPLUS</b>=201103L  
 Define this macro to override the auto-detection of the supported C++ standard, if your compiler does not set the `__cplusplus` macro correctly.
 
 <!--#### Disable exceptions
 
--D<b>indirect_value_CONFIG_NO_EXCEPTIONS</b>=0
+-D<b>indirect_CONFIG_NO_EXCEPTIONS</b>=0
 Define this to 1 if you want to compile without exceptions. If not defined, the header tries and detect if exceptions have been disabled (e.g. via `-fno-exceptions`). Default is undefined. -->
 
 #### Disable extensions
@@ -204,7 +204,7 @@ Define this to 1 if you want to compile without this extension. Default is undef
 
 Jonathan Coe. [Vocabulary Types for Composite Class Design](https://youtu.be/sjLRX4WMvlU?si=1_cfQGG2142i5VJo). C++ on Sea 2022.
 
-## Other implementations of indirect_value
+## Other implementations of indirect
 
 J.B. Coe. Reference implementation at [value_types](https://github.com/jbcoe/value_types). Value types for composite class design. GitHub.  
 A previous version is archived at [indirect_value](https://github.com/jbcoe/indirect_value).
@@ -229,69 +229,69 @@ A. Upadyshev. [PIMPL, Rule of Zero and Scott Meyers, Andrey Upadyshev](http://ol
 <a id="a1"></a>
 ### A.1 Compile-time information
 
-The version of *indirect_value lite* is available via tag `[.version]`. The following tags are available for information on the compiler and on the C++ standard library used: `[.compiler]`, `[.stdc++]`, `[.stdlanguage]` and `[.stdlibrary]`.
+The version of *indirect lite* is available via tag `[.version]`. The following tags are available for information on the compiler and on the C++ standard library used: `[.compiler]`, `[.stdc++]`, `[.stdlanguage]` and `[.stdlibrary]`.
 
 <a id="a2"></a>
-### A.2 indirect_value lite test specification
+### A.2 indirect lite test specification
 
 <details>
 <summary>click to expand</summary>
 <p>
 
 ```Text
-indirect_value: Allows to default construct (empty)
-indirect_value: Allows to construct from pointer
-indirect_value: Allows to in-place construct from arguments
-indirect_value: Allows to copy-construct
-indirect_value: Allows to move-construct
-indirect_value: Allows to copy-assign
-indirect_value: Allows to move-assign
-indirect_value: Allows to swap (value)
-indirect_value: Allows to swap (copier)
-indirect_value: Allows to swap (deleter)
-indirect_value: Allows to obtain value, operator->()
-indirect_value: Allows to obtain value, operator->() const
-indirect_value: Allows to obtain value, operator*() &
-indirect_value: Allows to obtain value, operator*() const &
-indirect_value: Allows to obtain value, operator*() &&
-indirect_value: Allows to obtain value,operator*() const &&
-indirect_value: Allows to check if engaged, operator bool()
-indirect_value: Allows to check if engaged, has_value() [extension]
-indirect_value: Allows to obtain value, value() & [extension]
-indirect_value: Allows to obtain value, value() const & [extension]
-indirect_value: Allows to obtain value, value() && [extension]
-indirect_value: Allows to obtain value, value() const && [extension]
-indirect_value: No throw of exception on valid value access, value() & [extension]
-indirect_value: No throw of exception on valid value access, value() const & [extension]
-indirect_value: No throw of exception on valid value access, value() && [extension]
-indirect_value: No throw of exception on valid value access, value() const && [extension]
-indirect_value: Throws on bad value access, value() & [extension]
-indirect_value: Throws on bad value access, value() const & [extension]
-indirect_value: Throws on bad value access, value() && [extension]
-indirect_value: Throws on bad value access, value() const && [extension]
-indirect_value: Allows to obtain copier, get_copier() & [extension]
-indirect_value: Allows to obtain copier, get_copier() const & [extension]
-indirect_value: Allows to obtain deleter, get_deleter() & [extension]
-indirect_value: Allows to obtain deleter, get_deleter() const & [extension]
-indirect_value: Ensure using minimum space requirements
-indirect_value: Ensure noexcept of observers
-indirect_value: Ensure ref- and const-qualifier of observers
-indirect_value: Ensure properties of bad_indirect_value_access [extension]
-indirect_value: Ensure stats of copy and delete type
-indirect_value: Ensure protection against reentrancy
-indirect_value: Ensure protection against self-assign
-indirect_value: Ensure using source copier when copying
-indirect_value: Ensure working with an incomplete type
-make_indirect_value(): Allows to in-place construct an indirect value from parameters
-allocate_indirect_value(): Allows to in-place construct an indirect value from parameters, with given allocator
+indirect: Allows to default construct (empty)
+indirect: Allows to construct from pointer
+indirect: Allows to in-place construct from arguments
+indirect: Allows to copy-construct
+indirect: Allows to move-construct
+indirect: Allows to copy-assign
+indirect: Allows to move-assign
+indirect: Allows to swap (value)
+indirect: Allows to swap (copier)
+indirect: Allows to swap (deleter)
+indirect: Allows to obtain value, operator->()
+indirect: Allows to obtain value, operator->() const
+indirect: Allows to obtain value, operator*() &
+indirect: Allows to obtain value, operator*() const &
+indirect: Allows to obtain value, operator*() &&
+indirect: Allows to obtain value,operator*() const &&
+indirect: Allows to check if engaged, operator bool()
+indirect: Allows to check if engaged, has_value() [extension]
+indirect: Allows to obtain value, value() & [extension]
+indirect: Allows to obtain value, value() const & [extension]
+indirect: Allows to obtain value, value() && [extension]
+indirect: Allows to obtain value, value() const && [extension]
+indirect: No throw of exception on valid value access, value() & [extension]
+indirect: No throw of exception on valid value access, value() const & [extension]
+indirect: No throw of exception on valid value access, value() && [extension]
+indirect: No throw of exception on valid value access, value() const && [extension]
+indirect: Throws on bad value access, value() & [extension]
+indirect: Throws on bad value access, value() const & [extension]
+indirect: Throws on bad value access, value() && [extension]
+indirect: Throws on bad value access, value() const && [extension]
+indirect: Allows to obtain copier, get_copier() & [extension]
+indirect: Allows to obtain copier, get_copier() const & [extension]
+indirect: Allows to obtain deleter, get_deleter() & [extension]
+indirect: Allows to obtain deleter, get_deleter() const & [extension]
+indirect: Ensure using minimum space requirements
+indirect: Ensure noexcept of observers
+indirect: Ensure ref- and const-qualifier of observers
+indirect: Ensure properties of bad_indirect_access [extension]
+indirect: Ensure stats of copy and delete type
+indirect: Ensure protection against reentrancy
+indirect: Ensure protection against self-assign
+indirect: Ensure using source copier when copying
+indirect: Ensure working with an incomplete type
+make_indirect(): Allows to in-place construct an indirect value from parameters
+allocate_indirect(): Allows to in-place construct an indirect value from parameters, with given allocator
 swap(): Allows to swap
-relational operators: Allows to compare indirect_value-s [extension]
-relational operators: Allows to compare indirect_value with nullptr [extension]
-relational operators: Allows to compare indirect_value with value convertible to its value_type [extension]
-relational operators: Allows to 3-way compare indirect_value-s [extension]
-relational operators: Allows to 3-way compare indirect_value with nullptr [extension]
-relational operators: Allows to 3-way compare indirect_value with value convertible to its value_type [extension]
-std::hash: Allows to hash an indirect_value [extension]
+relational operators: Allows to compare indirect-s [extension]
+relational operators: Allows to compare indirect with nullptr [extension]
+relational operators: Allows to compare indirect with value convertible to its value_type [extension]
+relational operators: Allows to 3-way compare indirect-s [extension]
+relational operators: Allows to 3-way compare indirect with nullptr [extension]
+relational operators: Allows to 3-way compare indirect with value convertible to its value_type [extension]
+std::hash: Allows to hash an indirect [extension]
 tweak header: reads tweak header if supported [tweak]
 ```
 
