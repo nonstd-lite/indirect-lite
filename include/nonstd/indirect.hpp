@@ -27,29 +27,29 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef NONSTD_INDIRECT_VALUE_LITE_HPP
-#define NONSTD_INDIRECT_VALUE_LITE_HPP
+#ifndef NONSTD_INDIRECT_LITE_HPP
+#define NONSTD_INDIRECT_LITE_HPP
 
-#define indirect_value_lite_MAJOR  0
-#define indirect_value_lite_MINOR  1
-#define indirect_value_lite_PATCH  0
+#define indirect_lite_MAJOR  0
+#define indirect_lite_MINOR  1
+#define indirect_lite_PATCH  0
 
-#define indirect_value_VERSION  nsiv_STRINGIFY(indirect_value_lite_MAJOR) "." nsiv_STRINGIFY(indirect_value_lite_MINOR) "." nsiv_STRINGIFY(indirect_value_lite_PATCH)
+#define indirect_VERSION  nsiv_STRINGIFY(indirect_lite_MAJOR) "." nsiv_STRINGIFY(indirect_lite_MINOR) "." nsiv_STRINGIFY(indirect_lite_PATCH)
 
 #define nsiv_STRINGIFY(  x )  nsiv_STRINGIFY_( x )
 #define nsiv_STRINGIFY_( x )  #x
 
 // indirect-value-lite configuration:
 
-#define nsiv_INDIRECT_VALUE_DEFAULT  0
-#define nsiv_INDIRECT_VALUE_NONSTD   1
-#define nsiv_INDIRECT_VALUE_STD      2
+#define nsiv_INDIRECT_DEFAULT  0
+#define nsiv_INDIRECT_NONSTD   1
+#define nsiv_INDIRECT_STD      2
 
 // tweak header support:
 
 #ifdef __has_include
-# if __has_include(<nonstd/indirect_value.tweak.hpp>)
-#  include <nonstd/indirect_value.tweak.hpp>
+# if __has_include(<nonstd/indirect.tweak.hpp>)
+#  include <nonstd/indirect.tweak.hpp>
 # endif
 #define nsiv_HAVE_TWEAK_HEADER  1
 #else
@@ -59,8 +59,8 @@
 
 // scope selection and configuration:
 
-#if !defined( nsiv_CONFIG_SELECT_INDIRECT_VALUE )
-# define nsiv_CONFIG_SELECT_INDIRECT_VALUE  ( nsiv_HAVE_STD_INDIRECT_VALUE ? nsiv_INDIRECT_VALUE_STD : nsiv_INDIRECT_VALUE_NONSTD )
+#if !defined( nsiv_CONFIG_SELECT_INDIRECT )
+# define nsiv_CONFIG_SELECT_INDIRECT  ( nsiv_HAVE_STD_INDIRECT ? nsiv_INDIRECT_STD : nsiv_INDIRECT_NONSTD )
 #endif
 
 #if !defined( nsiv_CONFIG_NO_EXTENSIONS )
@@ -107,9 +107,9 @@
 
 // If std::indirect_value is available, it's in <memory>, included further below.
 
-#define nsiv_HAVE_STD_INDIRECT_VALUE  0
+#define nsiv_HAVE_STD_INDIRECT  0
 
-#define nsiv_USES_STD_INDIRECT_VALUE  ( (nsiv_CONFIG_SELECT_INDIRECT_VALUE == nsiv_INDIRECT_VALUE_STD) || ((nsiv_CONFIG_SELECT_INDIRECT_VALUE == nsiv_INDIRECT_VALUE_DEFAULT) && nsiv_HAVE_STD_INDIRECT_VALUE) )
+#define nsiv_USES_STD_INDIRECT  ( (nsiv_CONFIG_SELECT_INDIRECT == nsiv_INDIRECT_STD) || ((nsiv_CONFIG_SELECT_INDIRECT == nsiv_INDIRECT_DEFAULT) && nsiv_HAVE_STD_INDIRECT) )
 
 //
 // in_place: code duplicated in any-lite, expected-lite, indirect_value, optional-lite, value-ptr-lite, variant-lite:
@@ -203,9 +203,9 @@ inline in_place_t in_place_index( detail::in_place_index_tag<K> /*unused*/ = det
 // Using std::indirect_value, or nonstd::indirect_value:
 //
 
-#if nsiv_USES_STD_INDIRECT_VALUE
+#if nsiv_USES_STD_INDIRECT
 // std::indirect_value is non-existent (yet)
-#else // nsiv_USES_STD_INDIRECT_VALUE
+#else // nsiv_USES_STD_INDIRECT
 
 // half-open range [lo..hi):
 #define nsiv_BETWEEN( v, lo, hi ) ( (lo) <= (v) && (v) < (hi) )
@@ -1390,6 +1390,6 @@ namespace nonstd {
 
 nsiv_RESTORE_MSVC_WARNINGS()
 
-#endif // nsiv_USES_STD_INDIRECT_VALUE
+#endif // nsiv_USES_STD_INDIRECT
 
-#endif // NONSTD_INDIRECT_VALUE_LITE_HPP
+#endif // NONSTD_INDIRECT_LITE_HPP

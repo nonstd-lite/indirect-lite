@@ -1,7 +1,7 @@
 name: CI
 
 env:
-  PROJECT: INDIRECT_VALUE_LITE
+  PROJECT: INDIRECT_LITE
 
 on:
   push:

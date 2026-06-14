@@ -23,7 +23,7 @@ indirect_value lite – An indirect value-type for C++11 and later in a single-f
 ## Example usage
 
 ```Cpp
-#include "nonstd/indirect_value.hpp"
+#include "nonstd/indirect.hpp"
 #include <array>
 
 using stdarr = std::array< int, 10 >;

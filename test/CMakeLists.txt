@@ -30,7 +30,7 @@ macro( opt option_text var )
     endif()
 endmacro()
 
-set( DEFCMN  -Dnsiv_INDIRECT_VALUE_HEADER=\"${HEADER}\" "-Dlest_FEATURE_AUTO_REGISTER=1")
+set( DEFCMN  -Dnsiv_INDIRECT_HEADER=\"${HEADER}\" "-Dlest_FEATURE_AUTO_REGISTER=1")
 
 set( OPTIONS     "" )
 
@@ -208,12 +208,12 @@ endif()
 # with C++17, honour explicit request for std::string_view or nonstd::string_view:
 
 if( HAS_CPP17_FLAG )
-    set( WHICH nsiv_INDIRECT_VALUE_DEFAULT )
+    set( WHICH nsiv_INDIRECT_DEFAULT )
 
-    if( INDIRECT_VALUE_LITE_OPT_SELECT_STD )
-        set( WHICH nsiv_INDIRECT_VALUE_STD )
-    elseif( INDIRECT_VALUE_LITE_OPT_SELECT_NONSTD )
-        set( WHICH nsiv_INDIRECT_VALUE_NONSTD )
+    if( INDIRECT_LITE_OPT_SELECT_STD )
+        set( WHICH nsiv_INDIRECT_STD )
+    elseif( INDIRECT_LITE_OPT_SELECT_NONSTD )
+        set( WHICH nsiv_INDIRECT_NONSTD )
     endif()
 
     target_compile_definitions( ${PROGRAM}-cpp17.t PRIVATE nsiv_CONFIG_SELECT_STRING_VIEW=${WHICH} )

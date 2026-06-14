@@ -35,20 +35,20 @@ endif()
 
 # If toplevel project, enable building and performing of tests, disable building of examples:
 
-option( INDIRECT_VALUE_LITE_OPT_BUILD_TESTS     "Build and perform indirect-lite tests" ${indirect_value_IS_TOPLEVEL_PROJECT} )
-option( INDIRECT_VALUE_LITE_OPT_BUILD_EXAMPLES  "Build indirect-lite examples" OFF )
+option( INDIRECT_LITE_OPT_BUILD_TESTS     "Build and perform indirect-lite tests" ${indirect_value_IS_TOPLEVEL_PROJECT} )
+option( INDIRECT_LITE_OPT_BUILD_EXAMPLES  "Build indirect-lite examples" OFF )
 
-# option( INDIRECT_VALUE_LITE_OPT_SELECT_STD      "Select std::indirect_value"    OFF )
-# option( INDIRECT_VALUE_LITE_OPT_SELECT_NONSTD   "Select nonstd::indirect_value" OFF )
+# option( INDIRECT_LITE_OPT_SELECT_STD      "Select std::indirect_value"    OFF )
+# option( INDIRECT_LITE_OPT_SELECT_NONSTD   "Select nonstd::indirect_value" OFF )
 
 # If requested, build and perform tests, build examples:
 
-if ( INDIRECT_VALUE_LITE_OPT_BUILD_TESTS )
+if ( INDIRECT_LITE_OPT_BUILD_TESTS )
     enable_testing()
     add_subdirectory( test )
 endif()
 
-if ( INDIRECT_VALUE_LITE_OPT_BUILD_EXAMPLES )
+if ( INDIRECT_LITE_OPT_BUILD_EXAMPLES )
     enable_testing()
     add_subdirectory( example )
 endif()

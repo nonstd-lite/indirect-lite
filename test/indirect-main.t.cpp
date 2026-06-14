@@ -22,20 +22,20 @@ lest::tests & specification()
 
 CASE( "indirect-value-lite version" "[.scope][.version]" )
 {
-    nsiv_PRESENT( indirect_value_lite_MAJOR );
-    nsiv_PRESENT( indirect_value_lite_MINOR );
-    nsiv_PRESENT( indirect_value_lite_PATCH );
-    nsiv_PRESENT( indirect_value_VERSION );
+    nsiv_PRESENT( indirect_lite_MAJOR );
+    nsiv_PRESENT( indirect_lite_MINOR );
+    nsiv_PRESENT( indirect_lite_PATCH );
+    nsiv_PRESENT( indirect_VERSION );
 }
 
 CASE( "indirect-value-lite configuration" "[.scope][.config]" )
 {
-    nsiv_PRESENT( nsiv_HAVE_STD_INDIRECT_VALUE );
-    nsiv_PRESENT( nsiv_USES_STD_INDIRECT_VALUE );
-    nsiv_PRESENT( nsiv_INDIRECT_VALUE_DEFAULT );
-    nsiv_PRESENT( nsiv_INDIRECT_VALUE_NONSTD );
-    nsiv_PRESENT( nsiv_INDIRECT_VALUE_STD );
-    nsiv_PRESENT( nsiv_CONFIG_SELECT_INDIRECT_VALUE );
+    nsiv_PRESENT( nsiv_HAVE_STD_INDIRECT );
+    nsiv_PRESENT( nsiv_USES_STD_INDIRECT );
+    nsiv_PRESENT( nsiv_INDIRECT_DEFAULT );
+    nsiv_PRESENT( nsiv_INDIRECT_NONSTD );
+    nsiv_PRESENT( nsiv_INDIRECT_STD );
+    nsiv_PRESENT( nsiv_CONFIG_SELECT_INDIRECT );
     // nsiv_PRESENT( nsiv_CONFIG_NO_EXCEPTIONS );
     nsiv_PRESENT( nsiv_CONFIG_NO_EXTENSIONS );
     nsiv_PRESENT( nsiv_CONFIG_NO_EXTENSION_REF_QUALIFIED_OPERATORS );
@@ -59,7 +59,7 @@ CASE( "__cplusplus" "[.stdc++]" )
 
 CASE( "Compiler version" "[.compiler]" )
 {
-#if nsiv_USES_STD_INDIRECT_VALUE
+#if nsiv_USES_STD_INDIRECT
     std::cout << "(Compiler version not available: using stdandard <scope>)\n";
 #else
     nsiv_PRESENT( nsiv_COMPILER_CLANG_VERSION );
@@ -70,7 +70,7 @@ CASE( "Compiler version" "[.compiler]" )
 
 CASE( "Presence of C++ language features" "[.stdlanguage]" )
 {
-#if nsiv_USES_STD_INDIRECT_VALUE
+#if nsiv_USES_STD_INDIRECT
     std::cout << "(Presence of C++ language features not available: using stdandard <scope>)\n";
 #else
     nsiv_PRESENT( nsiv_HAVE_CONSTEXPR_11 );
@@ -88,7 +88,7 @@ CASE( "Presence of C++ language features" "[.stdlanguage]" )
 
 CASE( "Presence of C++ library features" "[.stdlibrary]" )
 {
-#if nsiv_USES_STD_INDIRECT_VALUE
+#if nsiv_USES_STD_INDIRECT
     std::cout << "(Presence of C++ library features not available: using stdandard <scope>)\n";
 #else
     nsiv_PRESENT( nsiv_HAVE_TYPE_TRAITS );

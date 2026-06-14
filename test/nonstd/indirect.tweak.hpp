@@ -1,4 +1,4 @@
-#define INDIRECT_VALUE_TWEAK_VALUE 42
+#define INDIRECT_TWEAK_VALUE 42
 
 // Configuration macros:
 

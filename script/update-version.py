@@ -24,32 +24,32 @@ table = (
         , '    VERSION {major}.{minor}.{patch}' )
 
     , ( 'CMakeLists.txt'
-        , r'set\W+indirect_value_lite_version\W+"([0-9]+\.[0-9]+\.[0-9]+)"\W+$'
-        , 'set( indirect_value_lite_version "{major}.{minor}.{patch}" )\n' )
+        , r'set\W+indirect_lite_version\W+"([0-9]+\.[0-9]+\.[0-9]+)"\W+$'
+        , 'set( indirect_lite_version "{major}.{minor}.{patch}" )\n' )
 
 #    , ( 'example/cmake-pkg/CMakeLists.txt'
-#        , r'set\W+indirect_value_lite_version\W+"([0-9]+\.[0-9]+(\.[0-9]+)?)"\W+$'
-#        , 'set( indirect_value_lite_version "{major}.{minor}" )\n' )
+#        , r'set\W+indirect_lite_version\W+"([0-9]+\.[0-9]+(\.[0-9]+)?)"\W+$'
+#        , 'set( indirect_lite_version "{major}.{minor}" )\n' )
 #
 #    , ( 'script/install-xxx-pkg.py'
-#        , r'\indirect_value_lite_version\s+=\s+"([0-9]+\.[0-9]+\.[0-9]+)"\s*$'
-#        , 'indirect_value_lite_version = "{major}.{minor}.{patch}"\n' )
+#        , r'\indirect_lite_version\s+=\s+"([0-9]+\.[0-9]+\.[0-9]+)"\s*$'
+#        , 'indirect_lite_version = "{major}.{minor}.{patch}"\n' )
 
 #    , ( 'conanfile.py'
 #        , r'version\s+=\s+"([0-9]+\.[0-9]+\.[0-9]+)"\s*$'
 #        , 'version = "{major}.{minor}.{patch}"' )
 
     , ( 'include/nonstd/indirect.hpp'
-        , r'\#define\s+indirect_value_lite_MAJOR\s+[0-9]+\s*$'
-        , '#define indirect_value_lite_MAJOR  {major}' )
+        , r'\#define\s+indirect_lite_MAJOR\s+[0-9]+\s*$'
+        , '#define indirect_lite_MAJOR  {major}' )
 
     , ( 'include/nonstd/indirect.hpp'
-        , r'\#define\s+indirect_value_lite_MINOR\s+[0-9]+\s*$'
-        , '#define indirect_value_lite_MINOR  {minor}' )
+        , r'\#define\s+indirect_lite_MINOR\s+[0-9]+\s*$'
+        , '#define indirect_lite_MINOR  {minor}' )
 
     , ( 'include/nonstd/indirect.hpp'
-        , r'\#define\s+indirect_value_lite_PATCH\s+[0-9]+\s*$'
-        , '#define indirect_value_lite_PATCH  {patch}\n' )
+        , r'\#define\s+indirect_lite_PATCH\s+[0-9]+\s*$'
+        , '#define indirect_lite_PATCH  {patch}\n' )
 )
 
 # End configuration.

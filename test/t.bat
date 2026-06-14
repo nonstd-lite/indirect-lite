@@ -26,7 +26,7 @@ set unit_config=^
     -Dnsiv_CONFIG_STD_SV_OPERATOR=1 ^
     -Dnsiv_CONFIG_USR_SV_OPERATOR=1 ^
     -Dnsiv_CONFIG_CONFIRMS_COMPILATION_ERRORS=0 ^
-    -Dnsiv_INDIRECT_VALUE_HEADER=\"nonstd/indirect.hpp\"
+    -Dnsiv_INDIRECT_HEADER=\"nonstd/indirect.hpp\"
 
 set msvc_defines=^
     -Dlest_FEATURE_AUTO_REGISTER=1 ^

@@ -1628,7 +1628,7 @@ CASE( "std::hash: Allows to hash an indirect_value"  " [extension]" )
 CASE( "tweak header: reads tweak header if supported " "[tweak]" )
 {
 #if nsiv_HAVE_TWEAK_HEADER
-    EXPECT( INDIRECT_VALUE_TWEAK_VALUE == 42 );
+    EXPECT( INDIRECT_TWEAK_VALUE == 42 );
 #else
     EXPECT( !!"Tweak header is not available (nsiv_HAVE_TWEAK_HEADER: 0)." );
 #endif
