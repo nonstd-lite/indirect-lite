@@ -1,6 +1,6 @@
 // example/02-hot-cold.cpp
 
-#include "nonstd/indirect_value.hpp"
+#include "nonstd/indirect.hpp"
 #include <algorithm>
 #include <vector>
 

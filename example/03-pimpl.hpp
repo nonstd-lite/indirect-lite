@@ -1,6 +1,6 @@
 // Header file
 
-#include "nonstd/indirect_value.hpp"
+#include "nonstd/indirect.hpp"
 
 class widget
 {

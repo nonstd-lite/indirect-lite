@@ -3,8 +3,8 @@
 :: tg.bat - compile & run tests (GNUC).
 ::
 
-set      unit=indirect_value
-set unit_file=indirect-value
+set      unit=indirect
+set unit_file=indirect
 
 :: if no std is given, use c++11
 
@@ -29,7 +29,7 @@ set unit_config=^
     -Dnsiv_CONFIG_STD_SV_OPERATOR=1 ^
     -Dnsiv_CONFIG_USR_SV_OPERATOR=1 ^
     -Dnsiv_CONFIG_CONFIRMS_COMPILATION_ERRORS=0 ^
-    -Dnsiv_INDIRECT_VALUE_HEADER=\"nonstd/indirect_value.hpp\"
+    -Dnsiv_INDIRECT_VALUE_HEADER=\"nonstd/indirect.hpp\"
 
 rem -flto / -fwhole-program
 set  optflags=-O2

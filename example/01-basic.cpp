@@ -1,6 +1,6 @@
 // example/01-basic.cpp
 
-#include "nonstd/indirect_value.hpp"
+#include "nonstd/indirect.hpp"
 #include <array>
 
 using stdarr = std::array< int, 10 >;

@@ -3,8 +3,8 @@
 :: tc-cl.bat - compile & run tests (clang-cl).
 ::
 
-set      unit=indirect_value
-set unit_file=indirect-value
+set      unit=indirect
+set unit_file=indirect
 set unit_prfx=nsiv
 
 :: if no std is given, use c++14

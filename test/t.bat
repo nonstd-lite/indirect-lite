@@ -3,8 +3,8 @@
 :: t.bat - compile & run tests (MSVC).
 ::
 
-set      unit=indirect_value
-set unit_file=indirect-value
+set      unit=indirect
+set unit_file=indirect
 set unit_prfx=nssv
 
 :: if no std is given, use compiler default
@@ -26,7 +26,7 @@ set unit_config=^
     -Dnsiv_CONFIG_STD_SV_OPERATOR=1 ^
     -Dnsiv_CONFIG_USR_SV_OPERATOR=1 ^
     -Dnsiv_CONFIG_CONFIRMS_COMPILATION_ERRORS=0 ^
-    -Dnsiv_INDIRECT_VALUE_HEADER=\"nonstd/indirect_value.hpp\"
+    -Dnsiv_INDIRECT_VALUE_HEADER=\"nonstd/indirect.hpp\"
 
 set msvc_defines=^
     -Dlest_FEATURE_AUTO_REGISTER=1 ^

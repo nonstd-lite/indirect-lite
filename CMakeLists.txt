@@ -1,6 +1,6 @@
 # Copyright 2023-2023 by Martin Moene
 #
-# https://github.com/martinmoene/indirect-value-lite
+# https://github.com/martinmoene/indirect-lite
 #
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,15 +10,15 @@ cmake_minimum_required( VERSION 3.15 FATAL_ERROR )
 # indirect_value-lite project and version, updated by script/update-version.py:
 
 project(
-    indirect_value_lite
+    indirect_lite
     VERSION 0.1.0
 #   DESCRIPTION "A C++23-like indirect_value for C++11 and later in a single-file header-only library"
-#   HOMEPAGE_URL "https://github.com/martinmoene/indirect-value-lite"
+#   HOMEPAGE_URL "https://github.com/martinmoene/indirect-lite"
     LANGUAGES CXX )
 
 # Package information:
 
-set( unit_name       "indirect-value" )
+set( unit_name       "indirect" )
 set( package_nspace  "nonstd" )
 set( package_name    "${unit_name}-lite" )
 set( package_version "${${PROJECT_NAME}_VERSION}" )
@@ -35,8 +35,8 @@ endif()
 
 # If toplevel project, enable building and performing of tests, disable building of examples:
 
-option( INDIRECT_VALUE_LITE_OPT_BUILD_TESTS     "Build and perform indirect-value-lite tests" ${indirect_value_IS_TOPLEVEL_PROJECT} )
-option( INDIRECT_VALUE_LITE_OPT_BUILD_EXAMPLES  "Build indirect-value-lite examples" OFF )
+option( INDIRECT_VALUE_LITE_OPT_BUILD_TESTS     "Build and perform indirect-lite tests" ${indirect_value_IS_TOPLEVEL_PROJECT} )
+option( INDIRECT_VALUE_LITE_OPT_BUILD_EXAMPLES  "Build indirect-lite examples" OFF )
 
 # option( INDIRECT_VALUE_LITE_OPT_SELECT_STD      "Select std::indirect_value"    OFF )
 # option( INDIRECT_VALUE_LITE_OPT_SELECT_NONSTD   "Select nonstd::indirect_value" OFF )

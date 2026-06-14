@@ -39,15 +39,15 @@ table = (
 #        , r'version\s+=\s+"([0-9]+\.[0-9]+\.[0-9]+)"\s*$'
 #        , 'version = "{major}.{minor}.{patch}"' )
 
-    , ( 'include/nonstd/indirect_value.hpp'
+    , ( 'include/nonstd/indirect.hpp'
         , r'\#define\s+indirect_value_lite_MAJOR\s+[0-9]+\s*$'
         , '#define indirect_value_lite_MAJOR  {major}' )
 
-    , ( 'include/nonstd/indirect_value.hpp'
+    , ( 'include/nonstd/indirect.hpp'
         , r'\#define\s+indirect_value_lite_MINOR\s+[0-9]+\s*$'
         , '#define indirect_value_lite_MINOR  {minor}' )
 
-    , ( 'include/nonstd/indirect_value.hpp'
+    , ( 'include/nonstd/indirect.hpp'
         , r'\#define\s+indirect_value_lite_PATCH\s+[0-9]+\s*$'
         , '#define indirect_value_lite_PATCH  {patch}\n' )
 )
