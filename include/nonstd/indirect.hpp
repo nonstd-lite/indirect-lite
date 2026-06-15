@@ -34,7 +34,7 @@
 #define indirect_lite_MINOR  1
 #define indirect_lite_PATCH  0
 
-#define indirect_VERSION  nsiv_STRINGIFY(indirect_lite_MAJOR) "." nsiv_STRINGIFY(indirect_lite_MINOR) "." nsiv_STRINGIFY(indirect_lite_PATCH)
+#define indirect_lite_VERSION  nsiv_STRINGIFY(indirect_lite_MAJOR) "." nsiv_STRINGIFY(indirect_lite_MINOR) "." nsiv_STRINGIFY(indirect_lite_PATCH)
 
 #define nsiv_STRINGIFY(  x )  nsiv_STRINGIFY_( x )
 #define nsiv_STRINGIFY_( x )  #x

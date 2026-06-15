@@ -25,7 +25,7 @@ CASE( "indirect-value-lite version" "[.scope][.version]" )
     nsiv_PRESENT( indirect_lite_MAJOR );
     nsiv_PRESENT( indirect_lite_MINOR );
     nsiv_PRESENT( indirect_lite_PATCH );
-    nsiv_PRESENT( indirect_VERSION );
+    nsiv_PRESENT( indirect_lite_VERSION );
 }
 
 CASE( "indirect-value-lite configuration" "[.scope][.config]" )
