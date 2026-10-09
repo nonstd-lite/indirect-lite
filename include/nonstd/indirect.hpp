@@ -30,8 +30,8 @@
 #ifndef NONSTD_INDIRECT_LITE_HPP
 #define NONSTD_INDIRECT_LITE_HPP
 
-#define indirect_lite_MAJOR  0
-#define indirect_lite_MINOR  1
+#define indirect_lite_MAJOR  1
+#define indirect_lite_MINOR  0
 #define indirect_lite_PATCH  0
 
 #define indirect_lite_VERSION  nsiv_STRINGIFY(indirect_lite_MAJOR) "." nsiv_STRINGIFY(indirect_lite_MINOR) "." nsiv_STRINGIFY(indirect_lite_PATCH)
