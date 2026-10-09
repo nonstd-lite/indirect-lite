@@ -933,7 +933,7 @@ private:
 namespace detail {
 
 template < typename T, typename A, typename... Args >
-nsiv_constexpr20 T * allocate_object( A & a, Args &&... args )
+nsiv_constexpr20 T * allocate_object( A const & a, Args &&... args )
 {
     using t_allocator = typename std::allocator_traits< A >::template rebind_alloc< T >;
     using t_traits    = std::allocator_traits< t_allocator >;
@@ -954,7 +954,7 @@ nsiv_constexpr20 T * allocate_object( A & a, Args &&... args )
 }
 
 template < typename T, typename A >
-nsiv_constexpr14 void deallocate_object( A & a, T * p )
+nsiv_constexpr14 void deallocate_object( A const & a, T * p )
 {
     using t_allocator = typename std::allocator_traits< A >::template rebind_alloc< T >;
     using t_traits    = std::allocator_traits< t_allocator >;
@@ -967,14 +967,14 @@ nsiv_constexpr14 void deallocate_object( A & a, T * p )
 template < typename T, typename A >
 struct allocator_delete : A
 {
-    nsiv_constexpr allocator_delete( A & a )
+    nsiv_constexpr allocator_delete( A const & a )
         : A( a )
     {}
 
     nsiv_constexpr14 void operator()( T * ptr ) const nsiv_noexcept
     {
         static_assert( 0 < sizeof( T ), "can't delete an incomplete type" );
-        detail::deallocate_object( *this, ptr );
+        detail::deallocate_object< T, A >( *this, ptr );
     }
 };
 
@@ -983,13 +983,13 @@ struct allocator_copy : A
 {
     using deleter_type = allocator_delete< T, A >;
 
-    nsiv_constexpr allocator_copy( A & a )
+    nsiv_constexpr allocator_copy( A const & a )
         : A( a )
     {}
 
     nsiv_constexpr T * operator()( const T & t ) const
     {
-        return detail::allocate_object< T >( *this, t );
+        return detail::allocate_object< T, A >( *this, t );
     }
 };
 
