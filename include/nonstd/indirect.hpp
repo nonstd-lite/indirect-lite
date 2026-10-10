@@ -47,13 +47,11 @@
 
 // tweak header support:
 
-#ifdef __has_include
-# if __has_include(<nonstd/indirect.tweak.hpp>)
-#  include <nonstd/indirect.tweak.hpp>
-# endif
-#define nsiv_HAVE_TWEAK_HEADER  1
+#if defined(__has_include) && __has_include(<nonstd/indirect.tweak.hpp>)
+# include <nonstd/indirect.tweak.hpp>
+# define indirect_HAVE_TWEAK_HEADER  1
 #else
-#define nsiv_HAVE_TWEAK_HEADER  0
+# define indirect_HAVE_TWEAK_HEADER  0
 //# pragma message("indirect.hpp: Note: Tweak header not supported.")
 #endif
 
